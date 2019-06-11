@@ -27,7 +27,7 @@ public class P2Metaheuristicas {
     
     ArrayList<Integer> semillas = new ArrayList<>();
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         StringBuilder str=new StringBuilder();
        char opcion = '0';
        while (opcion != '7') {
@@ -63,7 +63,7 @@ public class P2Metaheuristicas {
                    }
                    break;
                 case '3':
-                    if(matrizDistancias.size() == 0 || matrizFlujos.size() == 0){
+                    if(matrizDistancias.isEmpty() || matrizFlujos.isEmpty()){
                         System.out.println("Los datos no estan cargados aún, ¿Desea cargarlos? (Responde con S o N)");
                         Reader entradaIn=new InputStreamReader(System.in);
                         opcion=(char)entradaIn.read();

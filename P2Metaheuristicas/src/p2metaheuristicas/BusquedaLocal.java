@@ -35,6 +35,14 @@ public class BusquedaLocal {
     }
     
     /**
+     * @return ArrayList<Integer> con la solucion final del algoritmo
+     * @description Esta funcion nos permite obtener la solucionFinal.
+     */
+    public ArrayList<Integer> getSolucionFinal(){
+        return solucionFinal;
+    }
+    
+    /**
      * @param herramientasAux Clase Herramientas que nos permitirá hacer el calculo de la Busqueda Local
      * @description Esta funcion nos permite modificar el valor de nuestro parametro herramientas.
      */
