@@ -7,17 +7,8 @@ package p2metaheuristicas;
 
 import java.util.ArrayList;
 import java.util.Random;
-import static p2metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo.AMG_ALL;
-import static p2metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo.AMG_10;
-import static p2metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo.AMG_3;
 
 public class AlgoritmoGeneticoGeneracional {
-    
-    public enum algoritmo{
-        AMG_ALL,
-        AMG_10,
-        AMG_3
-    };
     
     ArrayList<ArrayList<Integer>> poblacion;
     ArrayList<ArrayList<Integer>> poblacionNueva;
@@ -83,7 +74,7 @@ public class AlgoritmoGeneticoGeneracional {
     }
     
     @SuppressWarnings("empty-statement")
-    public void evolucion (boolean tipoCruce, algoritmo al){
+    public void evolucion (boolean tipoCruce){
         evolucionCoste.clear();
         Integer tamano = herramientasAux.getTamano();
         Integer numeroCromosomas = herramientasAux.getNumeroCromosomas();
@@ -182,56 +173,6 @@ public class AlgoritmoGeneticoGeneracional {
                 costes.set(posicionPeor, costeMejor);
             }
             
-            if (repeticiones == 10) {
-                if (al.equals(AMG_ALL)) {
-                    for (int i = 0; i < numeroCromosomas; i++) {
-                        BusquedaLocal busquedaLocal = new BusquedaLocal();
-                        busquedaLocal.setHerramientas(herramientasAux);
-                        busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
-                        costes.set(i, (float)busquedaLocal.AlgoritmoBusquedaLocal());
-                        poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
-                    }
-                }
-                if (al.equals(AMG_10)) {
-                    for (int i = 0; i < numeroCromosomas; i++) {
-                        Random r = new Random();
-                        float f =  (float) (r.nextFloat() * (1.0 - 0.0) + 0.0);
-                        if (f < 0.1) {
-                            BusquedaLocal busquedaLocal = new BusquedaLocal();
-                            busquedaLocal.setHerramientas(herramientasAux);
-                            busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
-                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal());
-                            poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
-                        }
-                    }
-                }
-                if (al.equals(AMG_3)) {
-                    Float auxiliar = Float.MAX_VALUE;
-                    ArrayList<Integer> pos = new ArrayList<>(3);
-                    ArrayList<Float> calculoCostes = new ArrayList<>();
-                    calculoCostes.addAll(costes);
-                    for (int i = 0; i < 3; i++) {
-                        auxiliar = Float.MAX_VALUE;
-                        for (int j = 0; j < numeroCromosomas; j++) {
-                            if (calculoCostes.get(j) < auxiliar) {
-                                auxiliar = calculoCostes.get(j);
-                                pos.set(i, j);
-                            }
-                        }
-                        calculoCostes.set(pos.get(i), Float.MAX_VALUE);
-
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        BusquedaLocal busquedaLocal = new BusquedaLocal();
-                        busquedaLocal.setHerramientas(herramientasAux);
-                        busquedaLocal.setSolucionAnterior(poblacionNueva.get(pos.get(i)));
-                        
-                        costes.set(pos.get(i), (float)busquedaLocal.AlgoritmoBusquedaLocal());
-                        poblacionNueva.set(pos.get(i), busquedaLocal.getSolucionFinal());
-                    }
-                }
-                repeticiones = 0;
-            }
             Integer posicionMejor = 0;
             for (int i = 1; i < numeroCromosomas; i++) {
                 if (costes.get(i) < costes.get(posicionMejor)) {
