@@ -34,8 +34,8 @@ public class AlgoritmoGeneticoEstacionario {
         }
         
         System.out.println("El mejor es: " + posicionPrimeroMejor + " con un coste de: " + costePoblacion.get(posicionPrimeroMejor));
-        System.out.println("El mejor es: " + posicionPrimeroPeor + " con un coste de: " + costePoblacion.get(posicionPrimeroPeor));
-        System.out.println("El mejor es: " + posicionSegundoPeor + " con un coste de: " + costePoblacion.get(posicionSegundoPeor));
+        System.out.println("El peor es: " + posicionPrimeroPeor + " con un coste de: " + costePoblacion.get(posicionPrimeroPeor));
+        System.out.println("El segundo peor es: " + posicionSegundoPeor + " con un coste de: " + costePoblacion.get(posicionSegundoPeor));
     
     }
     
