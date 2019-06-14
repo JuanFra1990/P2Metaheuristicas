@@ -76,6 +76,9 @@ public class BusquedaLocal {
         Integer coste = herramientas.costeTotal(solucionAnterior);
         Integer tamanoSolAnterior = solucionAnterior.size();
         ArrayList<Integer> dlb = new ArrayList<>(tamanoSolAnterior);
+        for (int i = 0; i<tamanoSolAnterior; i++){
+            dlb.add(0);
+        }
         Integer contador = 0;
         boolean mejora = true;
         boolean parada = false;

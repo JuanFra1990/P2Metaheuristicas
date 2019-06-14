@@ -10,14 +10,26 @@ import java.util.Random;
 
 public class AlgoritmoGeneticoGeneracional {
     
-    ArrayList<ArrayList<Integer>> poblacion;
-    ArrayList<ArrayList<Integer>> poblacionNueva;
-    ArrayList<Integer> evolucionCoste;
-    ArrayList<Integer> costePoblacion;
+    ArrayList<ArrayList<Integer>> poblacion = new ArrayList<>();
+    ArrayList<ArrayList<Integer>> poblacionNueva = new ArrayList<>();
+    ArrayList<Integer> evolucionCoste = new ArrayList<>();
+    ArrayList<Integer> costePoblacion = new ArrayList<>();
     Integer posicionPrimeroMejor;
-    ArrayList<Integer> mejor;
+    ArrayList<Integer> mejor = new ArrayList<>();
     HerramientasAuxiliares herramientasAux;
     
+    /**
+     * @param hA Valor que queremos darle a herramientasAux
+     * @description Funcion que permite darle valor a herramientasAux
+     */
+    public void setHerramientasAuxiliares(HerramientasAuxiliares hA){
+        herramientasAux = hA;
+    }
+    
+    
+    /**
+     * @description Funcion que nos permite mostrar por la salida estandar los miembros de la poblacion
+     */
     public void mostrarPoblacion(){
         for(int i=0; i<herramientasAux.getNumeroCromosomas();i++){
             System.out.println(" "+i+"---");

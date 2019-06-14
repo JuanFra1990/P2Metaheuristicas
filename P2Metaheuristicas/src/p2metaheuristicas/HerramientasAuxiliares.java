@@ -18,7 +18,14 @@ public class HerramientasAuxiliares {
     Float probabilidadMutacion;
     Integer evaluaciones;
     
-    /**
+     /**
+     * @description Esta función permite almacenar el valor del tamano.
+     */
+    
+    public void setTamano(Integer Ntamano) {
+        tamano = Ntamano;
+    }
+     /**
      * @description Esta función permite devolver el tamaño de las matrices.
      * @return tamano devuelve un Integer con el tamaño de las matrices de nuestro problema
      */
@@ -26,6 +33,34 @@ public class HerramientasAuxiliares {
     public Integer getTamano() {
         return tamano;
     }
+    
+    /**
+     * @param NmatrizFlujos nueva matriz de flujos para cambiar valor
+     * @description Esta función permite almacenar el valor de la matrizFlujos.
+     */
+    
+    public void setMatrizFlujos(ArrayList<ArrayList<Integer>> NmatrizFlujos) {
+        matrizFlujos = NmatrizFlujos;
+    }
+    
+    /**
+     * @param NmatrizDistancias nueva matriz de distancias para cambiar valor
+     * @description Esta función permite almacenar el valor de la matrizFlujos.
+     */
+    
+    public void setMatrizDistancias(ArrayList<ArrayList<Integer>> NmatrizDistancias) {
+        matrizDistancias = NmatrizDistancias;
+    }
+    
+    /**
+     * @param numCromosomas Valor que queremos darle a numeroCromosomas
+     * @description Esta función permite modificar el valor de numeroCromosomas.
+     */
+    
+    public void setNumeroCromosomas(Integer numCromosomas) {
+        numeroCromosomas = numCromosomas;
+    }
+    
     
     /**
      * @description Esta función nos permite devolver el número de cromosomas

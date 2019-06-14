@@ -19,25 +19,26 @@ import java.util.ArrayList;
  */
 public class P2Metaheuristicas {
 
-    int Semilla;
-    private static Integer tamano;
+     private static Integer tamano;
     
     private static final ArrayList<ArrayList<Integer>> matrizDistancias = new ArrayList<>();
     private static final ArrayList<ArrayList<Integer>> matrizFlujos = new ArrayList<>();
     
-    ArrayList<Integer> semillas = new ArrayList<>();
+    private static ArrayList<Integer> semillas = new ArrayList<>();
     
     public static void main(String[] args) throws IOException {
         StringBuilder str=new StringBuilder();
        char opcion = '0';
+       long startTime;
+      long endTime;
        while (opcion != '7') {
-           System.out.println("---------------Menú Practica 1 -----------------------------------------");
+           System.out.println("---------------Menú Practica 2 -----------------------------------------");
            System.out.println("--- 1. Carga de datos --------------------------------------------------");
            System.out.println("--- 2. Seleccion de semilla --------------------------------------------");
-           System.out.println("--- 3. Seleccion de algoritmo greedy------------------------------------");
-           System.out.println("--- 4. Seleccion de algoritmo busqueda Local (Algoritmo Greedy)---------");
-           System.out.println("--- 5. Seleccion de algoritmo busqueda Local (Aleatoria)----------------");
-           System.out.println("--- 6. Seleccion de algoritmo Enfriamiento Simulado --------------------");
+           System.out.println("--- 3. Seleccion de Algoritmo Genético Estacionario OX -----------------");
+           System.out.println("--- 4. Seleccion de Algoritmo Genético Estacionario PMX-----------------");
+           System.out.println("--- 5. Seleccion de Algoritmo Genético Generacional OX -----------------");
+           System.out.println("--- 6. Seleccion de Algoritmo Genético Generacional PMX ----------------");
            System.out.println("--- 7. Finalizar Programa ----------------------------------------------");
            System.out.println("------------------------------------------------------------------------");
            System.out.println("Introduce opción: ");
@@ -54,12 +55,15 @@ public class P2Metaheuristicas {
                    System.out.println("¿Cuantas semillas desea introducir?");
                    Reader entradaNumeroSemillas=new InputStreamReader(System.in);
                    opcion=(char)entradaNumeroSemillas.read();
+                   Integer tamanoSemilla = Character.getNumericValue(opcion);
                    Integer contador = 1;
-                   while ((int)opcion > 0){
+                   while (tamanoSemilla > 0){
                         System.out.println("Introduzca la semilla numero " + contador);
                         Reader entradaSemillas=new InputStreamReader(System.in);
                         opcion=(char)entradaSemillas.read();
-                        semillas.add((int)opcion);
+                        semillas.add(Character.getNumericValue(opcion));
+                        tamanoSemilla--;
+                        contador++;
                    }
                    break;
                 case '3':
@@ -74,16 +78,44 @@ public class P2Metaheuristicas {
                             System.out.println("Lo sentimos");
                             break;
                         }
-                    } 
+                    }
                     
-                    System.out.println("Has seleccionado la opción del Algoritmo Greedy");
-                    ArrayList<Integer> valoresDistancia = new ArrayList<>(tamano);
-                    ArrayList<Integer> valoresFlujo = new ArrayList<>(tamano);
-                    AlgoritmoGreedy ag = new AlgoritmoGreedy();
-                    ag.setTamano(tamano);
-                    ag.setArrays(matrizDistancias, matrizFlujos);
-                    ag.calculoFilasGreedy(valoresDistancia, valoresFlujo);
-                    ArrayList<Integer> vectorSolucion = ag.AlgoritmoGreedy(valoresDistancia, valoresFlujo);                   
+                    if (semillas.isEmpty()){
+                        System.out.println("¿Cuantas semillas desea introducir?");
+                        Reader entradaNumeroSemillasR=new InputStreamReader(System.in);
+                        opcion=(char)entradaNumeroSemillasR.read();
+                        Integer tamanoSemillaESB =  Character.getNumericValue(opcion);;
+                        Integer contadorR = 0;
+                        while ((int)tamanoSemillaESB > 0){
+                            System.out.println("Introduzca la semilla numero " + contadorR);
+                            Reader entradaSemillas=new InputStreamReader(System.in);
+                            opcion=(char)entradaSemillas.read();
+                            semillas.add(Character.getNumericValue(opcion));
+                            tamanoSemillaESB--;
+                            contadorR++;
+                        }
+                        
+                        if (opcion == 0){
+                            System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
+                            System.out.println("Lo sentimos");
+                            break;
+                        }
+                    }
+                    
+                    System.out.println("Has seleccionado la opción del Algoritmo Genético Estacionario OX");
+                    startTime = System.currentTimeMillis();
+                    AlgoritmoGeneticoEstacionario algoritmoEstacionario = new AlgoritmoGeneticoEstacionario();
+                    HerramientasAuxiliares herramientasAuxiliares = new HerramientasAuxiliares();
+                    herramientasAuxiliares.setMatrizDistancias(matrizDistancias);
+                    herramientasAuxiliares.setMatrizFlujos(matrizFlujos);
+                    herramientasAuxiliares.setTamano(tamano);
+                    herramientasAuxiliares.setNumeroCromosomas(2);
+                    algoritmoEstacionario.setHerramientasAuxiliares(herramientasAuxiliares);
+                    algoritmoEstacionario.evolucion(true);
+                    algoritmoEstacionario.mostrarSolucion();
+                    endTime = System.currentTimeMillis() - startTime;
+                    System.out.println("Ha tardado " + endTime + " ms");
+                                     
                    break;
                  case '4':
                     if(matrizDistancias.size() == 0 || matrizFlujos.size() == 0){
@@ -97,54 +129,141 @@ public class P2Metaheuristicas {
                             System.out.println("Lo sentimos");
                             break;
                         }
-                    }  
+                    }
                     
-                   System.out.println("Has seleccionado la opción del Algoritmo Busqueda Local a traves de la solución Greedy");
-                    ArrayList<Integer> valoresDistanciaBL = new ArrayList<>(tamano);
-                    ArrayList<Integer> valoresFlujoBL = new ArrayList<>(tamano);
-                    AlgoritmoGreedy alg = new AlgoritmoGreedy();
-                    alg.setTamano(tamano);
-                    alg.setArrays(matrizDistancias, matrizFlujos);
-                    alg.calculoFilasGreedy(valoresDistanciaBL, valoresFlujoBL);
-                    ArrayList<Integer> vectorSolucionBL = alg.AlgoritmoGreedy(valoresDistanciaBL, valoresFlujoBL);
-                    
-                    BusquedaLocal busquedaLocal = new BusquedaLocal();
-                    busquedaLocal.setSolucionAnterior(vectorSolucionBL);
-                    Integer coste = busquedaLocal.AlgoritmoBusquedaLocal();
-                    System.out.println(busquedaLocal.ConversorArrayString());
-                    System.out.println("Coste: " + coste);
-                   break;
-                case '5':
-                    ArrayList<Integer> Aleatorio = new ArrayList<>();
-                    if (semillas.size() == 0){
+                    if (semillas.isEmpty()){
                         System.out.println("¿Cuantas semillas desea introducir?");
                         Reader entradaNumeroSemillasR=new InputStreamReader(System.in);
                         opcion=(char)entradaNumeroSemillasR.read();
-                        Integer contadorR = 1;
-                        while ((int)opcion > 0){
+                        Integer tamanoSemillaESB =  Character.getNumericValue(opcion);;
+                        Integer contadorR = 0;
+                        while ((int)tamanoSemillaESB > 0){
                             System.out.println("Introduzca la semilla numero " + contadorR);
                             Reader entradaSemillas=new InputStreamReader(System.in);
                             opcion=(char)entradaSemillas.read();
-                            semillas.add((int)opcion);
+                            semillas.add(Character.getNumericValue(opcion));
+                            tamanoSemillaESB--;
+                            contadorR++;
+                        }
+                        
+                        if (opcion == 0){
+                            System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
+                            System.out.println("Lo sentimos");
+                            break;
                         }
                     }
-                    Integer c = 0;
-                    while (c < semillas.size()) {
-                        String semi = Integer.toString(semillas.get(c));
-                        System.out.println("Búsqueda Local respecto a la semilla " + semillas.get(c));
-                        Aleatorio.clear();
-                        BusquedaLocal busquedaLocalAleatoria = new BusquedaLocal();
-                        HerramientasAuxiliares herramientasAuxiliares = new HerramientasAuxiliares();
-                        herramientasAuxiliares.cargarVector(Aleatorio);
-                        busquedaLocalAleatoria.setHerramientas(herramientasAuxiliares);
-                        busquedaLocalAleatoria.setSolucionAnterior(Aleatorio);
-                        Integer CosteUltimaSolucion = busquedaLocalAleatoria.AlgoritmoBusquedaLocal();
-                        System.out.println("Coste: " + CosteUltimaSolucion);
-                        c++;
+                    
+                   System.out.println("Has seleccionado la opción del Algoritmo Genético Estacionario OX");
+                   startTime = System.currentTimeMillis();
+                    AlgoritmoGeneticoEstacionario algoritmoEstacionarioPMX = new AlgoritmoGeneticoEstacionario();
+                    HerramientasAuxiliares herramientasAuxiliaresGE = new HerramientasAuxiliares();
+                    herramientasAuxiliaresGE.setMatrizDistancias(matrizDistancias);
+                    herramientasAuxiliaresGE.setMatrizFlujos(matrizFlujos);
+                    herramientasAuxiliaresGE.setTamano(tamano);
+                    algoritmoEstacionarioPMX.setHerramientasAuxiliares(herramientasAuxiliaresGE);
+                    algoritmoEstacionarioPMX.evolucion(false);
+                    algoritmoEstacionarioPMX.mostrarSolucion();
+                    endTime = System.currentTimeMillis() - startTime;
+                    System.out.println("Ha tardado " + endTime + " ms");
+                   break;
+                case '5':
+                    if(matrizDistancias.size() == 0 || matrizFlujos.size() == 0){
+                        System.out.println("Los datos no estan cargados aún, ¿Desea cargarlos? (Responde con S o N)");
+                        Reader entradaIn=new InputStreamReader(System.in);
+                        opcion=(char)entradaIn.read();
+                        if (opcion == 'S'){
+                            cargaDatos("./archivos/cnf02.dat");
+                        } else {
+                            System.out.println("Sin datos no podemos lanzar el algoritmo de búsqueda local.");
+                            System.out.println("Lo sentimos");
+                            break;
+                        }
                     }
+                    
+                    if (semillas.isEmpty()){
+                        System.out.println("¿Cuantas semillas desea introducir?");
+                        Reader entradaNumeroSemillasR=new InputStreamReader(System.in);
+                        opcion=(char)entradaNumeroSemillasR.read();
+                        Integer tamanoSemillaESB =  Character.getNumericValue(opcion);;
+                        Integer contadorR = 0;
+                        while ((int)tamanoSemillaESB > 0){
+                            System.out.println("Introduzca la semilla numero " + contadorR);
+                            Reader entradaSemillas=new InputStreamReader(System.in);
+                            opcion=(char)entradaSemillas.read();
+                            semillas.add(Character.getNumericValue(opcion));
+                            tamanoSemillaESB--;
+                            contadorR++;
+                        }
+                        
+                        if (opcion == 0){
+                            System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
+                            System.out.println("Lo sentimos");
+                            break;
+                        }
+                    }
+                    
+                   System.out.println("Has seleccionado la opción del Algoritmo Genético Generacional OX");
+                    startTime = System.currentTimeMillis();
+                    AlgoritmoGeneticoGeneracional algoritmoGeneracionalOX = new AlgoritmoGeneticoGeneracional();
+                    HerramientasAuxiliares herramientasAuxiliaresGGO = new HerramientasAuxiliares();
+                    herramientasAuxiliaresGGO.setMatrizDistancias(matrizDistancias);
+                    herramientasAuxiliaresGGO.setMatrizFlujos(matrizFlujos);
+                    herramientasAuxiliaresGGO.setTamano(tamano);
+                    algoritmoGeneracionalOX.setHerramientasAuxiliares(herramientasAuxiliaresGGO);
+                    algoritmoGeneracionalOX.evolucion(true);
+                    algoritmoGeneracionalOX.mostrarSolucion();
+                     endTime = System.currentTimeMillis() - startTime;
+                    System.out.println("Ha tardado " + endTime + " ms");
+                   
+                   break;
                 case '6':
-                   System.out.println("El algoritmo de enfriamiento simulado aún no esta implementado.");
-                   System.out.println("Elija otra. ¡Gracias!.");
+                    if(matrizDistancias.size() == 0 || matrizFlujos.size() == 0){
+                        System.out.println("Los datos no estan cargados aún, ¿Desea cargarlos? (Responde con S o N)");
+                        Reader entradaIn=new InputStreamReader(System.in);
+                        opcion=(char)entradaIn.read();
+                        if (opcion == 'S'){
+                            cargaDatos("./archivos/cnf02.dat");
+                        } else {
+                            System.out.println("Sin datos no podemos lanzar el algoritmo de búsqueda local.");
+                            System.out.println("Lo sentimos");
+                            break;
+                        }
+                    }
+                    
+                    if (semillas.isEmpty()){
+                        System.out.println("¿Cuantas semillas desea introducir?");
+                        Reader entradaNumeroSemillasR=new InputStreamReader(System.in);
+                        opcion=(char)entradaNumeroSemillasR.read();
+                        Integer tamanoSemillaESB =  Character.getNumericValue(opcion);;
+                        Integer contadorR = 0;
+                        while ((int)tamanoSemillaESB > 0){
+                            System.out.println("Introduzca la semilla numero " + contadorR);
+                            Reader entradaSemillas=new InputStreamReader(System.in);
+                            opcion=(char)entradaSemillas.read();
+                            semillas.add(Character.getNumericValue(opcion));
+                            tamanoSemillaESB--;
+                            contadorR++;
+                        }
+                        
+                        if (opcion == 0){
+                            System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
+                            System.out.println("Lo sentimos");
+                            break;
+                        }
+                    }
+                    
+                    System.out.println("Has seleccionado la opción del Algoritmo Genético Generacional PMX");
+                    startTime = System.currentTimeMillis();
+                    AlgoritmoGeneticoGeneracional algoritmoGeneracionalPMX = new AlgoritmoGeneticoGeneracional();
+                    HerramientasAuxiliares herramientasAuxiliaresGGP = new HerramientasAuxiliares();
+                    herramientasAuxiliaresGGP.setMatrizDistancias(matrizDistancias);
+                    herramientasAuxiliaresGGP.setMatrizFlujos(matrizFlujos);
+                    herramientasAuxiliaresGGP.setTamano(tamano);
+                    algoritmoGeneracionalPMX.setHerramientasAuxiliares(herramientasAuxiliaresGGP);
+                    algoritmoGeneracionalPMX.evolucion(true);
+                    algoritmoGeneracionalPMX.mostrarSolucion();
+                     endTime = System.currentTimeMillis() - startTime;
+                    System.out.println("Ha tardado " + endTime + " ms");
                    break;
                 case '7':
                    System.out.println("Ha decidido salir del programa, muchisimas gracias por usarlo.");
