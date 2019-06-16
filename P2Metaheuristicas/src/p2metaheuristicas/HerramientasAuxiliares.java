@@ -71,11 +71,27 @@ public class HerramientasAuxiliares {
     }
     
     /**
+     * @param _probabilidadCruce valor que queremos dar a la variable probabilidadCruce
+     * @description Esta función nos facilita cambiar el valor de la probabilidad de Cruce
+     */
+    public void setProbabilidadCruce(Float _probabilidadCruce){
+        probabilidadCruce = _probabilidadCruce;
+    }
+    
+    /**
      * @description Esta función es para ver la probabilidad de cruce que hay
      * @return probabilidadCruce devuelve un Float que representa la probabilidad de cruce
      */
     public Float getProbabilidadCruce(){
         return probabilidadCruce;
+    }
+    
+    /**
+     * @param _probabilidadMutacion valor que queremos dar a la variable probabilidadMutacion
+     * @description Esta función nos facilita cambiar el valor de la probabilidad de Mutacion
+     */
+    public void setProbabilidadMutacion(Float _probabilidadMutacion){
+        probabilidadMutacion = _probabilidadMutacion;
     }
     
     /**
@@ -92,6 +108,15 @@ public class HerramientasAuxiliares {
      */
     public Integer getEvaluaciones(){
         return evaluaciones;
+    }
+    
+      /**
+     * @param _evaluaciones valor que queremos dar a la variable evaluaciones
+     * @description Esta función permite cambiar el valor de la variable evaluaciones.
+     */
+    
+    public void setEvaluaciones(Integer _evaluaciones) {
+        evaluaciones = _evaluaciones;
     }
     
     /**

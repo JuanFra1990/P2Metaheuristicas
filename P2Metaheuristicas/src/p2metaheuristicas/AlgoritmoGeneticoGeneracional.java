@@ -12,11 +12,12 @@ public class AlgoritmoGeneticoGeneracional {
     
     ArrayList<ArrayList<Integer>> poblacion = new ArrayList<>();
     ArrayList<ArrayList<Integer>> poblacionNueva = new ArrayList<>();
-    ArrayList<Integer> evolucionCoste = new ArrayList<>();
-    ArrayList<Integer> costePoblacion = new ArrayList<>();
+    ArrayList<Integer> evolucionCoste;
+    ArrayList<Integer> costePoblacion;
     Integer posicionPrimeroMejor;
     ArrayList<Integer> mejor = new ArrayList<>();
     HerramientasAuxiliares herramientasAux;
+    
     
     /**
      * @param hA Valor que queremos darle a herramientasAux
@@ -87,11 +88,15 @@ public class AlgoritmoGeneticoGeneracional {
     
     @SuppressWarnings("empty-statement")
     public void evolucion (boolean tipoCruce){
-        evolucionCoste.clear();
         Integer tamano = herramientasAux.getTamano();
         Integer numeroCromosomas = herramientasAux.getNumeroCromosomas();
+        ArrayList<Integer> pob = new ArrayList<>(tamano);
+        costePoblacion = new ArrayList<>();
+        for (int i = 0; i<numeroCromosomas; i++) {
+            poblacion.add(pob);
+            costePoblacion.add(i);
+        }
         
-
         for (int i = 0; i < numeroCromosomas; i++) {
             herramientasAux.cargarVector(poblacion.get(i));
             costePoblacion.set(i, herramientasAux.costeTotal(poblacion.get(i)));
@@ -113,26 +118,26 @@ public class AlgoritmoGeneticoGeneracional {
         Integer contador = 0;
         Integer repeticiones = 0;
 
-    
         while (contador < generaciones) {
-
-            //Torneo;
             posicionPrimeroMejor = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
-                Integer posicion2;
-
-                while (i == (posicion2 = (int) (Math.random() * numeroCromosomas -1) + 1));
+                Integer posicion2 = i;
+                poblacionNueva.add(new ArrayList<>(numeroCromosomas));
+                while (i==posicion2){
+                    posicion2 =  (int) (Math.random() * numeroCromosomas -1);
+                    System.out.println(posicion2);
+                }
                 if (costePoblacion.get(i) < costePoblacion.get(posicion2)) {
                     poblacionNueva.set(i, poblacion.get(i));
-                    costes.set(i, (float)costePoblacion.get(i));
+                    costes.add(i, (float)costePoblacion.get(i));
                 } else {
                     poblacionNueva.set(i, poblacion.get(posicion2));
-                    costes.set(i, (float)costePoblacion.get(posicion2));
+                    costes.add(i, (float)costePoblacion.get(posicion2));
                 }
-
                 if (costes.get(i) < costes.get(posicionPrimeroMejor)) {
                     posicionPrimeroMejor = i;
                 }
+                
             }
 
             Float costeMejor; 

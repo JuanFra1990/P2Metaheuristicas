@@ -11,8 +11,8 @@ import java.util.Random;
 
 public class AlgoritmoGeneticoEstacionario {
     ArrayList<ArrayList<Integer>> poblacion = new ArrayList<>();
-    ArrayList<Integer> costePoblacion = new ArrayList<>();
-    ArrayList<Integer> evolucionCoste = new ArrayList<>();
+    ArrayList<Integer> costePoblacion;
+    ArrayList<Integer> evolucionCoste;
     Integer posicionPrimeroMejor;
     Integer posicionSegundoMejor;
     Integer posicionPrimeroPeor;
@@ -106,12 +106,18 @@ public class AlgoritmoGeneticoEstacionario {
         ArrayList<Integer> padreUno, padreDos;
         ArrayList<Integer> hijoUno, hijoDos;
         Integer costeHUno, costeHDos;
+        ArrayList<Integer> pob = new ArrayList<>(tamano);
+        posicionSegundoPeor = 0;
         
+        for (int i = 0; i<numeroCromosomas; i++) {
+            poblacion.add(pob);
+        }
         
-        costePoblacion.add(numeroCromosomas);
+        costePoblacion = new ArrayList<>(numeroCromosomas);
         for (int i=0; i < numeroCromosomas; i++){
+            System.out.println("Tamaño: " + poblacion.size());
             herramientasAux.cargarVector(poblacion.get(i));
-            costePoblacion.add(costePoblacion.get(i),herramientasAux.costeTotal(poblacion.get(i)));
+            costePoblacion.add(i,herramientasAux.costeTotal(poblacion.get(i)));
             if (i == 0){
                 posicionPrimeroMejor = i;
                 posicionPrimeroPeor = i;
@@ -123,6 +129,7 @@ public class AlgoritmoGeneticoEstacionario {
                     posicionSegundoPeor = posicionPrimeroPeor;
                     posicionPrimeroPeor = i;
                 }else{
+                    System.out.println(posicionSegundoPeor);
                     if(costePoblacion.get(i) > costePoblacion.get(posicionSegundoPeor)){
                         posicionSegundoPeor = i;
                     }
@@ -132,7 +139,7 @@ public class AlgoritmoGeneticoEstacionario {
         
         Integer p1, p2, p3, p4;
         Cruce cruce = new Cruce(tamano);
-        
+        System.out.println(herramientasAux.getEvaluaciones());
         while(evaluaciones < herramientasAux.getEvaluaciones()){
             p1=RandomEnRango(0, numeroCromosomas-1);
             p2=RandomEnRango(0, numeroCromosomas-1);
@@ -271,8 +278,7 @@ public class AlgoritmoGeneticoEstacionario {
     }
     
     public void mostrarSolucion(){
-        int tamano = herramientasAux.getTamano();
-        for(int i=0; i<tamano; i++){
+        for(int i=0; i<poblacion.size(); i++){
             System.out.println(" "+poblacion.get(i)+" ");
         }
         

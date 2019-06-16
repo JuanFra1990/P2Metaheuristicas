@@ -110,6 +110,7 @@ public class P2Metaheuristicas {
                     herramientasAuxiliares.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliares.setTamano(tamano);
                     herramientasAuxiliares.setNumeroCromosomas(2);
+                    herramientasAuxiliares.setEvaluaciones(0);
                     algoritmoEstacionario.setHerramientasAuxiliares(herramientasAuxiliares);
                     algoritmoEstacionario.evolucion(true);
                     algoritmoEstacionario.mostrarSolucion();
@@ -160,6 +161,8 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGE.setMatrizDistancias(matrizDistancias);
                     herramientasAuxiliaresGE.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGE.setTamano(tamano);
+                    herramientasAuxiliaresGE.setNumeroCromosomas(2);
+                    herramientasAuxiliaresGE.setEvaluaciones(0);
                     algoritmoEstacionarioPMX.setHerramientasAuxiliares(herramientasAuxiliaresGE);
                     algoritmoEstacionarioPMX.evolucion(false);
                     algoritmoEstacionarioPMX.mostrarSolucion();
@@ -209,6 +212,10 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGGO.setMatrizDistancias(matrizDistancias);
                     herramientasAuxiliaresGGO.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGGO.setTamano(tamano);
+                    herramientasAuxiliaresGGO.setNumeroCromosomas(2);
+                    herramientasAuxiliaresGGO.setEvaluaciones(1);
+                    herramientasAuxiliaresGGO.setProbabilidadCruce(Float.MAX_VALUE);
+                    herramientasAuxiliaresGGO.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalOX.setHerramientasAuxiliares(herramientasAuxiliaresGGO);
                     algoritmoGeneracionalOX.evolucion(true);
                     algoritmoGeneracionalOX.mostrarSolucion();
@@ -259,6 +266,8 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGGP.setMatrizDistancias(matrizDistancias);
                     herramientasAuxiliaresGGP.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGGP.setTamano(tamano);
+                    herramientasAuxiliaresGGP.setNumeroCromosomas(2);
+                    herramientasAuxiliaresGGP.setEvaluaciones(0);
                     algoritmoGeneracionalPMX.setHerramientasAuxiliares(herramientasAuxiliaresGGP);
                     algoritmoGeneracionalPMX.evolucion(true);
                     algoritmoGeneracionalPMX.mostrarSolucion();
