@@ -121,18 +121,18 @@ public class AlgoritmoGeneticoGeneracional {
         while (contador < generaciones) {
             posicionPrimeroMejor = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
-                Integer posicion2 = i;
+                float posicion2 = 0;
                 poblacionNueva.add(new ArrayList<>(numeroCromosomas));
                 while (i==posicion2){
-                    posicion2 =  (int) (Math.random() * numeroCromosomas -1);
+                    posicion2 =  (float) (Math.random() * numeroCromosomas -1) +1;
                     System.out.println(posicion2);
                 }
-                if (costePoblacion.get(i) < costePoblacion.get(posicion2)) {
+                if (costePoblacion.get(i) < costePoblacion.get(Math.round(posicion2))) {
                     poblacionNueva.set(i, poblacion.get(i));
                     costes.add(i, (float)costePoblacion.get(i));
                 } else {
-                    poblacionNueva.set(i, poblacion.get(posicion2));
-                    costes.add(i, (float)costePoblacion.get(posicion2));
+                    poblacionNueva.set(i, poblacion.get(Math.round(posicion2)));
+                    costes.add(i, (float)costePoblacion.get(Math.round(posicion2)));
                 }
                 if (costes.get(i) < costes.get(posicionPrimeroMejor)) {
                     posicionPrimeroMejor = i;
@@ -146,19 +146,20 @@ public class AlgoritmoGeneticoGeneracional {
 
             ArrayList<Boolean> flagsPadres = new ArrayList<>(numeroCromosomas); 
             Double p;
-            Integer elemento;
+            float elemento;
             for (int i = 0; i < numeroCromosomas; i++) {
                 Random r = new Random();
                 p = r.nextFloat() * (1.0 - 0.0) + 0.0;
                 if (p < probabilidadCruce) {
-                    while (i == (elemento = (r.nextInt() * numeroCromosomas -1)));
+                    while (i == (elemento = ((float) (Math.random() * numeroCromosomas -1) +1)));
                     if (tipoCruce == true) {
-                        cruce.OX(poblacionNueva.get(i), poblacionNueva.get(elemento));
+                        System.out.println(elemento);
+                        cruce.OX(poblacionNueva.get(i), poblacionNueva.get(Math.round(elemento)));
                     } else {
-                        cruce.PMX(poblacionNueva.get(i), poblacionNueva.get(elemento));
+                        cruce.PMX(poblacionNueva.get(i), poblacionNueva.get(Math.round(elemento)));
                     }
-                    flagsPadres.set(i, true);
-                    flagsPadres.set(elemento, true);
+                    flagsPadres.add(i, true);
+                    flagsPadres.add(Math.round(elemento), true);
                     poblacionNueva.set(i, cruce.hijoUno());
                     poblacionNueva.set(i, cruce.hijoDos());
                 }
