@@ -66,8 +66,12 @@ public class Cruce {
     }
     
     public void OX (ArrayList<Integer> _padreUno, ArrayList<Integer> _padreDos){
-        padreUno = _padreUno;
-        padreDos = _padreDos;
+        padreUno = new ArrayList<>();
+        _padreUno.forEach((n) -> padreUno.add(n));
+        padreDos = new ArrayList<>();
+        _padreDos.forEach((n) -> padreDos.add(n));
+        hijoUno = new ArrayList<>();
+        hijoDos = new ArrayList<>();
         
         Integer rangoUno = RandomEnRango(0, tamano-1);
         Integer rangoDos = RandomEnRango(0, tamano-1);
@@ -77,11 +81,10 @@ public class Cruce {
             swap(rangoUno,rangoDos);
         }
         
-        
         for(int i=0; i<tamano; i++){
             if(i<rangoUno && i<=rangoDos){
-                hijoUno.add(hijoUno.get(i), padreUno.get(i));
-                hijoDos.add(hijoDos.get(i), padreDos.get(i));
+                hijoUno.add(i, padreUno.get(i));
+                hijoDos.add(i, padreDos.get(i));
                 
             }
         }
@@ -98,12 +101,20 @@ public class Cruce {
             boolean estaDos=busca(padreDos,padreUno.get(i%tamano),rangoUno,rangoDos,posicion);
             
             if(estaUno == false){
-                hijoUno.add(hijoUno.get(contador1%tamano), padreDos.get(i%tamano));
+                if (contador1%tamano > hijoUno.size()-1){
+                    hijoUno.add(padreDos.get(i%tamano));
+                } else {
+                    hijoUno.set(hijoUno.get(contador1%tamano), padreDos.get(i%tamano));
+                }
                 contador1++;
             }
             
             if(estaDos == false){
-                hijoDos.add(hijoDos.get(contador2%tamano), padreUno.get(i%tamano));
+                if (contador2%tamano > hijoDos.size()-1){
+                    hijoDos.add(padreUno.get(i%tamano));
+                } else {
+                    hijoDos.set(hijoDos.get(contador2%tamano), padreUno.get(i%tamano));
+                }
                 contador2++;
             }
             i++;

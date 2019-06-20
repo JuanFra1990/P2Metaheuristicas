@@ -121,11 +121,10 @@ public class AlgoritmoGeneticoGeneracional {
         while (contador < generaciones) {
             posicionPrimeroMejor = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
-                float posicion2 = 0;
+                int posicion2 = 0;
                 poblacionNueva.add(new ArrayList<>(numeroCromosomas));
                 while (i==posicion2){
-                    posicion2 =  (float) (Math.random() * numeroCromosomas -1) +1;
-                    System.out.println(posicion2);
+                    posicion2 =  (int) (Math.random() * numeroCromosomas -1) +1;
                 }
                 if (costePoblacion.get(i) < costePoblacion.get(Math.round(posicion2))) {
                     poblacionNueva.set(i, poblacion.get(i));
@@ -146,14 +145,15 @@ public class AlgoritmoGeneticoGeneracional {
 
             ArrayList<Boolean> flagsPadres = new ArrayList<>(numeroCromosomas); 
             Double p;
-            float elemento;
+            int elemento = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
                 Random r = new Random();
                 p = r.nextFloat() * (1.0 - 0.0) + 0.0;
                 if (p < probabilidadCruce) {
-                    while (i == (elemento = ((float) (Math.random() * numeroCromosomas -1) +1)));
+                     while (i==elemento){
+                        elemento =  (int) (Math.random() * numeroCromosomas);
+                    }
                     if (tipoCruce == true) {
-                        System.out.println(elemento);
                         cruce.OX(poblacionNueva.get(i), poblacionNueva.get(Math.round(elemento)));
                     } else {
                         cruce.PMX(poblacionNueva.get(i), poblacionNueva.get(Math.round(elemento)));
@@ -162,10 +162,12 @@ public class AlgoritmoGeneticoGeneracional {
                     flagsPadres.add(Math.round(elemento), true);
                     poblacionNueva.set(i, cruce.hijoUno());
                     poblacionNueva.set(i, cruce.hijoDos());
-                }
+                }    
             }
-
+            System.out.println("Llega1");
+            
             funcionMutacion(flagsPadres, (int) Math.round(probabilidadMutacion));
+            
             Boolean elitismo = false; 
             
             for (int i = 0; i < numeroCromosomas; i++) {
@@ -207,7 +209,9 @@ public class AlgoritmoGeneticoGeneracional {
             contador++;
             repeticiones++;
             evolucionCoste.add(costePoblacion.get(posicionPrimeroMejor));
+            
         }
+        
     }
     
     public void funcionMutacion(ArrayList<Boolean> marcaje, int pMutacion){
@@ -221,7 +225,7 @@ public class AlgoritmoGeneticoGeneracional {
                 if(marcaje.get(i) == true){
                     p = RandomEnRangoDouble(0.0, 1.0);
                     if(p<pMutacion){
-                        while(j == (genetico=RandomEnRango(0, tamano-1))){
+                        while(j == (genetico=(int) (Math.random() * numeroCromosomas))){
                             swap(poblacionNueva.get(i).get(j),poblacionNueva.get(i).get(genetico));
                         }
                     }

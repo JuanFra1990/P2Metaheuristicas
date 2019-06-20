@@ -156,8 +156,8 @@ public class HerramientasAuxiliares {
     
     public Integer costeTotal(ArrayList<Integer> Solucion) {
         Integer coste = 0;
-        for (Integer i = 0; i < tamano; i++) {
-            for (Integer j = 0; j < tamano; j++) {
+        for (Integer i = 0; i < numeroCromosomas; i++) {
+            for (Integer j = 0; j < numeroCromosomas; j++) {
                 if (!Objects.equals(i, j))
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
             }
