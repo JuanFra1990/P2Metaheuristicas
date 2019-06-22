@@ -12,7 +12,7 @@ public class AlgoritmoGeneticoGeneracional {
     
     ArrayList<ArrayList<Integer>> poblacion = new ArrayList<>();
     ArrayList<ArrayList<Integer>> poblacionNueva = new ArrayList<>();
-    ArrayList<Integer> evolucionCoste;
+    ArrayList<Integer> evolucionCoste = new ArrayList<>();
     ArrayList<Integer> costePoblacion;
     Integer posicionPrimeroMejor;
     ArrayList<Integer> mejor = new ArrayList<>();
@@ -124,7 +124,10 @@ public class AlgoritmoGeneticoGeneracional {
                 int posicion2 = 0;
                 poblacionNueva.add(new ArrayList<>(numeroCromosomas));
                 while (i==posicion2){
-                    posicion2 =  (int) (Math.random() * numeroCromosomas -1) +1;
+                    posicion2 =  (int) (Math.random() * numeroCromosomas);
+               }
+               if (posicion2 == numeroCromosomas) {
+                    posicion2--;
                 }
                 if (costePoblacion.get(i) < costePoblacion.get(Math.round(posicion2))) {
                     poblacionNueva.set(i, poblacion.get(i));
@@ -151,7 +154,10 @@ public class AlgoritmoGeneticoGeneracional {
                 p = r.nextFloat() * (1.0 - 0.0) + 0.0;
                 if (p < probabilidadCruce) {
                      while (i==elemento){
-                        elemento =  (int) (Math.random() * numeroCromosomas);
+                            elemento =  (int) (Math.random() * numeroCromosomas);
+                    }
+                    if (elemento == numeroCromosomas) {
+                        elemento--;
                     }
                     if (tipoCruce == true) {
                         cruce.OX(poblacionNueva.get(i), poblacionNueva.get(Math.round(elemento)));
