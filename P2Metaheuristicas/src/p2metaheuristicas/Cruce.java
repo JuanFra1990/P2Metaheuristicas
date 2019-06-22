@@ -70,8 +70,13 @@ public class Cruce {
         _padreUno.forEach((n) -> padreUno.add(n));
         padreDos = new ArrayList<>();
         _padreDos.forEach((n) -> padreDos.add(n));
-        hijoUno = new ArrayList<>();
-        hijoDos = new ArrayList<>();
+        hijoUno = new ArrayList<>(tamano);
+        hijoDos = new ArrayList<>(tamano);
+        
+        for (int i = 0; i < tamano; i++){
+            hijoUno.add(0);
+            hijoDos.add(0);
+        }
         
         Integer rangoUno = RandomEnRango(0, tamano-1);
         Integer rangoDos = RandomEnRango(0, tamano-1);
@@ -83,8 +88,8 @@ public class Cruce {
         
         for(int i=0; i<tamano; i++){
             if(i<rangoUno && i<=rangoDos){
-                hijoUno.add(i, padreUno.get(i));
-                hijoDos.add(i, padreDos.get(i));
+                hijoUno.set(i,padreUno.get(i));
+                hijoDos.set(i,padreDos.get(i));
                 
             }
         }

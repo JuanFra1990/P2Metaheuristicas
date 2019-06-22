@@ -268,6 +268,8 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGGP.setTamano(tamano);
                     herramientasAuxiliaresGGP.setNumeroCromosomas(2);
                     herramientasAuxiliaresGGP.setEvaluaciones(0);
+                    herramientasAuxiliaresGGP.setProbabilidadMutacion(Float.POSITIVE_INFINITY);
+                    herramientasAuxiliaresGGP.setProbabilidadCruce(Float.MAX_VALUE);
                     algoritmoGeneracionalPMX.setHerramientasAuxiliares(herramientasAuxiliaresGGP);
                     algoritmoGeneracionalPMX.evolucion(true);
                     algoritmoGeneracionalPMX.mostrarSolucion();

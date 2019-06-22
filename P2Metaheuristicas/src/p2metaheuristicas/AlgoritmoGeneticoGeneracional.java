@@ -110,7 +110,8 @@ public class AlgoritmoGeneticoGeneracional {
         }
     
         Float probabilidadCruce = herramientasAux.getProbabilidadCruce(); 
-        Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano; 
+        System.out.println(tamano + "----" + herramientasAux.getProbabilidadMutacion());
+        Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano-1; 
         
         ArrayList<Float> costes = new ArrayList<>(numeroCromosomas); // donde se iran guardando los costes de los ganadores del los torneos
         Cruce cruce = new Cruce(numeroCromosomas);
@@ -170,7 +171,6 @@ public class AlgoritmoGeneticoGeneracional {
                     poblacionNueva.set(i, cruce.hijoDos());
                 }    
             }
-            System.out.println("Llega1");
             
             funcionMutacion(flagsPadres, (int) Math.round(probabilidadMutacion));
             
@@ -232,7 +232,11 @@ public class AlgoritmoGeneticoGeneracional {
                     p = RandomEnRangoDouble(0.0, 1.0);
                     if(p<pMutacion){
                         while(j == (genetico=(int) (Math.random() * numeroCromosomas))){
-                            swap(poblacionNueva.get(i).get(j),poblacionNueva.get(i).get(genetico));
+                            //System.out.println(genetico);
+                            Integer auxiliar = poblacionNueva.get(i).get(genetico);
+                            poblacionNueva.get(i).set(genetico, poblacionNueva.get(i).get(j));
+                            poblacionNueva.get(i).set(j, auxiliar);
+                            //swap(poblacionNueva.get(i).get(j),poblacionNueva.get(i).get(genetico));
                         }
                     }
                 }
