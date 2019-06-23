@@ -110,7 +110,6 @@ public class AlgoritmoGeneticoGeneracional {
         }
     
         Float probabilidadCruce = herramientasAux.getProbabilidadCruce(); 
-        System.out.println(tamano + "----" + herramientasAux.getProbabilidadMutacion());
         Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano-1; 
         
         ArrayList<Float> costes = new ArrayList<>(numeroCromosomas); // donde se iran guardando los costes de los ganadores del los torneos
