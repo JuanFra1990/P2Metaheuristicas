@@ -182,7 +182,6 @@ public class AlgoritmoGeneticoGeneracional {
                     if (i == posicionPrimeroMejor) {
                         elitismo = true;
                     }
-                    System.out.println(poblacionNueva.get(i));
                     costes.add(i, (float)herramientasAux.costeTotal(poblacionNueva.get(i)));
                     evaluaciones++;
                     if(Objects.equals(evaluaciones, totalevaluaciones))
