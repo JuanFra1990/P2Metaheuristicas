@@ -6,6 +6,7 @@
 package p2metaheuristicas;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class AlgoritmoGeneticoGeneracional {
@@ -109,16 +110,17 @@ public class AlgoritmoGeneticoGeneracional {
             }
         }
     
+    
         Float probabilidadCruce = herramientasAux.getProbabilidadCruce(); 
         Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano-1; 
         
         ArrayList<Float> costes = new ArrayList<>(numeroCromosomas); // donde se iran guardando los costes de los ganadores del los torneos
         Cruce cruce = new Cruce(numeroCromosomas);
-        Integer generaciones = 1000;
-        Integer contador = 0;
+        Integer evaluaciones = 100;
+        Integer totalevaluaciones = herramientasAux.getEvaluaciones();
         Integer repeticiones = 0;
-
-        while (contador < generaciones) {
+        
+        while(evaluaciones<totalevaluaciones){
             posicionPrimeroMejor = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
                 int posicion2 = 0;
@@ -180,8 +182,11 @@ public class AlgoritmoGeneticoGeneracional {
                     if (i == posicionPrimeroMejor) {
                         elitismo = true;
                     }
-                    costes.set(i, (float)herramientasAux.costeTotal(poblacionNueva.get(i)));
-                    //evaluaciones++;if(evaluaciones==totalevaluaciones)break;
+                    System.out.println(poblacionNueva.get(i));
+                    costes.add(i, (float)herramientasAux.costeTotal(poblacionNueva.get(i)));
+                    evaluaciones++;
+                    if(Objects.equals(evaluaciones, totalevaluaciones))
+                        break;
                 }
             }
             
@@ -205,15 +210,24 @@ public class AlgoritmoGeneticoGeneracional {
                 }
             }
             
-            posicionPrimeroMejor = posicionMejor;
+            posicionPrimeroMejor=posicionMejor;
             mejor = poblacionNueva.get(posicionMejor);
             costeMejor = costes.get(posicionMejor);
+            
+            if(evolucionCoste.size() == 9){
+                int i = 234;
+            }
+       
+            
+        
+            poblacion=poblacionNueva;
+            
+            for(int i=0; i<costes.size(); i++){
+                costePoblacion.add(costes.get(i).intValue());
+            }
 
-            poblacion = poblacionNueva;
-            costes.forEach((n) -> costePoblacion.add(Math.round(n))); 
-            contador++;
-            repeticiones++;
             evolucionCoste.add(costePoblacion.get(posicionPrimeroMejor));
+            
             
         }
         
@@ -244,11 +258,12 @@ public class AlgoritmoGeneticoGeneracional {
     }
     
     public void mostrarSolucion(){
-        int tamano = herramientasAux.getTamano();
-        for(int i=0; i<tamano; i++){
-            System.out.println(" " + poblacion.get(i) + " ");
+        for(int i=0; i<poblacion.size(); i++){
+            System.out.println(" "+poblacion.get(i)+" ");
         }
-        
-        System.out.println("Coste: "+costePoblacion.get(posicionPrimeroMejor));
+        /*for (int i=0; i<costePoblacion.size(); i++){
+            System.out.println("Coste: " + costePoblacion.get(i));
+        }*/
+        System.out.println("Coste: " + costePoblacion.get(posicionPrimeroMejor));
     }
 }

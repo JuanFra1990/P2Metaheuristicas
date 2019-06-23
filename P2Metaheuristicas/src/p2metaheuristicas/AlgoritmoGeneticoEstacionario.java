@@ -115,7 +115,6 @@ public class AlgoritmoGeneticoEstacionario {
         
         costePoblacion = new ArrayList<>(numeroCromosomas);
         for (int i=0; i < numeroCromosomas; i++){
-            System.out.println("Tamaño: " + poblacion.size());
             herramientasAux.cargarVector(poblacion.get(i));
             costePoblacion.add(i,herramientasAux.costeTotal(poblacion.get(i)));
             if (i == 0){
@@ -129,7 +128,6 @@ public class AlgoritmoGeneticoEstacionario {
                     posicionSegundoPeor = posicionPrimeroPeor;
                     posicionPrimeroPeor = i;
                 }else{
-                    System.out.println(posicionSegundoPeor);
                     if(costePoblacion.get(i) > costePoblacion.get(posicionSegundoPeor)){
                         posicionSegundoPeor = i;
                     }
@@ -139,7 +137,6 @@ public class AlgoritmoGeneticoEstacionario {
         
         Integer p1, p2, p3, p4;
         Cruce cruce = new Cruce(tamano);
-        System.out.println(herramientasAux.getEvaluaciones());
         while(evaluaciones < herramientasAux.getEvaluaciones()){
             p1=RandomEnRango(0, numeroCromosomas-1);
             p2=RandomEnRango(0, numeroCromosomas-1);

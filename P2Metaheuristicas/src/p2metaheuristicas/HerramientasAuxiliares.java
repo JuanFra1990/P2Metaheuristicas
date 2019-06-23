@@ -149,21 +149,23 @@ public class HerramientasAuxiliares {
     }
     
         /**
-     * @param solucion Array de Integer que contiene la solución
+     * @param Solucion Array de Integer que contiene la solución
      * @description Esta función permite realizar el calculo del coste de creación de dicha solución.
      * @return coste devuelve un Integer con el coste de la solución
      */
     
-    public Integer costeTotal(ArrayList<Integer> Solucion) {
-        Integer coste = 0;
-        for (Integer i = 0; i < numeroCromosomas; i++) {
-            for (Integer j = 0; j < numeroCromosomas; j++) {
-                if (!Objects.equals(i, j))
+  public Integer costeTotal(ArrayList<Integer> Solucion) {
+        int coste = 0;
+        for (int i = 0; i < tamano-1; i++) {
+            for (int j = 0; j < tamano-1; j++) {
+                if (i != j) {
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
+                }
             }
         }
         return coste;
     }
+    
     
     /**
      * @param Solucion Array de Integer que contiene una solución a nuestro problema 
