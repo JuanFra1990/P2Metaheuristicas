@@ -99,36 +99,35 @@ public class AlgoritmoGeneticoEstacionario {
     }
     
     public void evolucion (boolean tipoCruce){
-        Integer evaluaciones = 100;
+        Integer evaluaciones = 50;
         Integer tamano = herramientasAux.getTamano();
         Integer numeroCromosomas = herramientasAux.getNumeroCromosomas();
-        Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion();
+        Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano;
         ArrayList<Integer> padreUno, padreDos;
         ArrayList<Integer> hijoUno, hijoDos;
         Integer costeHUno, costeHDos;
+        poblacion = new ArrayList<ArrayList<Integer>>(numeroCromosomas);
         ArrayList<Integer> pob = new ArrayList<>(tamano);
-        posicionSegundoPeor = 0;
-        
-        for (int i = 0; i<numeroCromosomas; i++) {
+        for(int i=0; i<numeroCromosomas; i++){
             poblacion.add(pob);
         }
-        
-        costePoblacion = new ArrayList<>(numeroCromosomas);
-        for (int i=0; i < numeroCromosomas; i++){
+        costePoblacion = new ArrayList<Integer>(numeroCromosomas);
+       
+        for (int i = 0; i < numeroCromosomas; i++) {
             herramientasAux.cargarVector(poblacion.get(i));
-            costePoblacion.add(i,herramientasAux.costeTotal(poblacion.get(i)));
-            if (i == 0){
+            costePoblacion.add(i, herramientasAux.costeTotal(poblacion.get(i)));
+            if (i == 0) {
                 posicionPrimeroMejor = i;
                 posicionPrimeroPeor = i;
-            }else{
-                if(costePoblacion.get(i) < costePoblacion.get(posicionPrimeroMejor)){
+            } else {
+                if (costePoblacion.get(i) < costePoblacion.get(posicionPrimeroMejor)) {
                     posicionPrimeroMejor = i;
                 }
-                if(costePoblacion.get(i) > costePoblacion.get(posicionPrimeroPeor)){
+                if (costePoblacion.get(i) >= costePoblacion.get(posicionPrimeroPeor)) {
                     posicionSegundoPeor = posicionPrimeroPeor;
                     posicionPrimeroPeor = i;
-                }else{
-                    if(costePoblacion.get(i) > costePoblacion.get(posicionSegundoPeor)){
+                } else {
+                    if (costePoblacion.get(i) > costePoblacion.get(posicionSegundoPeor)) {
                         posicionSegundoPeor = i;
                     }
                 }
@@ -137,27 +136,33 @@ public class AlgoritmoGeneticoEstacionario {
         
         Integer p1, p2, p3, p4;
         Cruce cruce = new Cruce(tamano);
-        while(evaluaciones < herramientasAux.getEvaluaciones()){
+        
+        if (tipoCruce) {
+            System.out.println("Ha seleccionado el tipo de Algoritmo Genetico estacionario OX");
+        } else {
+            System.out.println("Ha seleccionado el tipo de Algoritmo Genetico estacionario PMX");
+        }
+         while(evaluaciones < herramientasAux.getEvaluaciones()){
             p1=RandomEnRango(0, numeroCromosomas-1);
             p2=RandomEnRango(0, numeroCromosomas-1);
             p3=RandomEnRango(0, numeroCromosomas-1);
             p4=RandomEnRango(0, numeroCromosomas-1);
             
-            if(costePoblacion.get(p1)<costePoblacion.get(p2)){
+            if (costePoblacion.get(p1) < costePoblacion.get(p2)) {
                 padreUno = poblacion.get(p1);
-            }else{
+            } else {
                 padreUno = poblacion.get(p2);
             }
             
-            if(costePoblacion.get(p3)<costePoblacion.get(p4)){
+             if (costePoblacion.get(p3) < costePoblacion.get(p4)) {
                 padreDos = poblacion.get(p3);
-            }else{
+            } else {
                 padreDos = poblacion.get(p4);
             }
-            
-            if(tipoCruce==true){
+
+            if (tipoCruce) {
                 cruce.OX(padreUno, padreDos);
-            }else{
+            } else {
                 cruce.PMX(padreUno, padreDos);
             }
             
@@ -167,50 +172,47 @@ public class AlgoritmoGeneticoEstacionario {
             funcionMutacion(hijoUno, hijoDos);
             costeHUno = herramientasAux.costeTotal(hijoUno);
             evaluaciones++;
-            if(evaluaciones == herramientasAux.getEvaluaciones()){
-                break;
-            }
-            
+            if (evaluaciones == herramientasAux.getEvaluaciones()) break;
             costeHDos = herramientasAux.costeTotal(hijoDos);
             evaluaciones++;
-            if(evaluaciones == herramientasAux.getEvaluaciones()){
-                break;
-            }
-            
+            if (evaluaciones == herramientasAux.getEvaluaciones())break;
             funcionReemplazo(hijoUno,hijoDos,costeHUno,costeHDos);
             
+             
             posicionPrimeroPeor = 0;
             posicionSegundoPeor = 0;
             
-            for(int i=0; i<numeroCromosomas; i++){
-                if(costePoblacion.get(i) < costePoblacion.get(posicionPrimeroMejor)){
+            for (int i = 0; i < numeroCromosomas; i++) {
+                if (costePoblacion.get(i) < costePoblacion.get(posicionPrimeroMejor)) {
                     posicionPrimeroMejor = i;
                 }
-                if(costePoblacion.get(i) < costePoblacion.get(posicionPrimeroPeor)){
-                    posicionSegundoPeor = posicionPrimeroPeor;
+                if (costePoblacion.get(i) > costePoblacion.get(posicionPrimeroMejor)) {
+                    posicionSegundoPeor = posicionPrimeroMejor;
                     posicionPrimeroPeor = i;
-                }else{
-                    if(costePoblacion.get(i) < costePoblacion.get(posicionSegundoPeor)){
-                    posicionSegundoPeor = i;
-                }
+                } else {
+                    if (costePoblacion.get(i) > costePoblacion.get(posicionPrimeroMejor)) {
+                        posicionSegundoPeor = i;
+                    }
                 }
             }
             evolucionCoste.add(costePoblacion.get(posicionPrimeroMejor));
-        }
+         }
     }
     
     public void funcionMutacion(ArrayList<Integer> hijoUno,ArrayList<Integer> hijoDos){
         Integer tamano = herramientasAux.getTamano();
         Double p;
         Double pMutacion = 0.001 * tamano;
-        Integer genetico1, genetico2;
+        Integer genetico1;
         
         for(int i=0; i<tamano; i++){
             p = RandomEnRangoDouble(0.0, 1.0);
             if(p < pMutacion){
                 genetico1 = RandomEnRango(0, tamano-1);
                 while(i == (genetico1 = RandomEnRango(0, tamano-1))){
-                   swap(hijoUno.get(i),hijoUno.get(genetico1)); 
+                    Integer aux = hijoUno.get(i);
+                    hijoUno.set(i, hijoUno.get(genetico1));
+                    hijoUno.set(genetico1, aux);
                 };
             }
         }
@@ -220,7 +222,9 @@ public class AlgoritmoGeneticoEstacionario {
             if(p < pMutacion){
                 genetico1 = RandomEnRango(0, tamano-1);
                 while(i == (genetico1 = RandomEnRango(0, tamano-1))){
-                   swap(hijoDos.get(i),hijoDos.get(genetico1)); 
+                    Integer aux = hijoDos.get(i);
+                    hijoDos.set(i, hijoDos.get(genetico1));
+                    hijoDos.set(genetico1, aux);
                 };
             }
         }

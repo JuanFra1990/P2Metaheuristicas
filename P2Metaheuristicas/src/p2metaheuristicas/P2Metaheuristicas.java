@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,7 +50,9 @@ public class P2Metaheuristicas {
             switch (opcion){
                 case '1':
                    System.out.println("Has seleccionado la opción de cargar datos");
-                   cargaDatos("./archivos/cnf04dat.sec");
+                   String fichero = seleccionFichero();
+                   System.out.println("Has seleccionado el fichero " + fichero);
+                   cargaDatos(fichero);
                    break;
                 case '2':
                    System.out.println("Has seleccionado la opción de seleccionar semillas");
@@ -110,7 +114,9 @@ public class P2Metaheuristicas {
                     herramientasAuxiliares.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliares.setTamano(tamano);
                     herramientasAuxiliares.setNumeroCromosomas(2);
-                    herramientasAuxiliares.setEvaluaciones(0);
+                    herramientasAuxiliares.setEvaluaciones(10);
+                    herramientasAuxiliares.setProbabilidadMutacion(Float.POSITIVE_INFINITY);
+                    herramientasAuxiliares.setProbabilidadCruce(Float.MAX_VALUE);
                     algoritmoEstacionario.setHerramientasAuxiliares(herramientasAuxiliares);
                     algoritmoEstacionario.evolucion(true);
                     algoritmoEstacionario.mostrarSolucion();
@@ -162,7 +168,9 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGE.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGE.setTamano(tamano);
                     herramientasAuxiliaresGE.setNumeroCromosomas(2);
-                    herramientasAuxiliaresGE.setEvaluaciones(0);
+                    herramientasAuxiliaresGE.setEvaluaciones(10);
+                    herramientasAuxiliaresGE.setProbabilidadMutacion(Float.POSITIVE_INFINITY);
+                    herramientasAuxiliaresGE.setProbabilidadCruce(Float.MAX_VALUE);
                     algoritmoEstacionarioPMX.setHerramientasAuxiliares(herramientasAuxiliaresGE);
                     algoritmoEstacionarioPMX.evolucion(false);
                     algoritmoEstacionarioPMX.mostrarSolucion();
@@ -213,7 +221,7 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGGO.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGGO.setTamano(tamano);
                     herramientasAuxiliaresGGO.setNumeroCromosomas(2);
-                    herramientasAuxiliaresGGO.setEvaluaciones(1);
+                    herramientasAuxiliaresGGO.setEvaluaciones(10);
                     herramientasAuxiliaresGGO.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresGGO.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalOX.setHerramientasAuxiliares(herramientasAuxiliaresGGO);
@@ -267,7 +275,7 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGGP.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGGP.setTamano(tamano);
                     herramientasAuxiliaresGGP.setNumeroCromosomas(2);
-                    herramientasAuxiliaresGGP.setEvaluaciones(0);
+                    herramientasAuxiliaresGGP.setEvaluaciones(10);
                     herramientasAuxiliaresGGP.setProbabilidadMutacion(Float.POSITIVE_INFINITY);
                     herramientasAuxiliaresGGP.setProbabilidadCruce(Float.MAX_VALUE);
                     algoritmoGeneracionalPMX.setHerramientasAuxiliares(herramientasAuxiliaresGGP);
@@ -339,6 +347,33 @@ public class P2Metaheuristicas {
         int tamFlujos = matrizFlujos.size() -1;
         System.out.println("El tamaño de la matriz de flujos es: " + tamFlujos);
         System.out.println("El tamaño de la matriz de distancias es: " + tamDistancias);
-    } 
+    }
+    
+    public static String seleccionFichero(){
+        System.out.println("¿Que fichero desea seleccionar? (Seleccione un numero del 1 - 10)");
+        String ruta = "";
+        int opcion = -1;
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader bf = new BufferedReader (isr);
+        try {
+             while (opcion < 0 || opcion >10){
+                String lineaTeclado = bf.readLine();
+                opcion = Integer.parseInt(lineaTeclado);
+                System.out.println(opcion);
+                if (opcion > 0 && opcion < 4 || opcion > 5 && opcion < 10){
+                   ruta = "./archivos/cnf0" + opcion + ".dat";
+                } else if (opcion >= 4 && opcion <= 5){
+                   ruta = "./archivos/cnf0" + opcion + "dat.sec";
+                } else if(opcion == 10){
+                     ruta = "./archivos/cnf" + opcion + ".dat";
+                } else {
+                    ruta = "No es posible leer esta opcion, seleccione un numero valido";
+                }
+             }   
+         } catch (IOException ex) {
+             Logger.getLogger(P2Metaheuristicas.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        return ruta;
+    }
     
 }

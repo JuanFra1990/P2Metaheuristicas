@@ -11,9 +11,17 @@ public class AlgoritmoGreedy {
     int Semilla;
     Integer tamano;
     
-    ArrayList<ArrayList<Integer>> matrizDistancias = new ArrayList<>();
-    ArrayList<ArrayList<Integer>> matrizFlujos = new ArrayList<>();
+    ArrayList<Integer> final1 = new ArrayList<>();
+    ArrayList<Integer> final2 = new ArrayList<>();
     
+    ArrayList<Integer> solucion = new ArrayList<>();
+    
+    /**
+     * @return ArrayList<Integer> devuelve el vector solucion
+     */
+    public ArrayList<Integer> getSolucion(){
+        return solucion;
+    }
     /**
      * @param t Integer que permite modificar el tamaño de nuestros Arrays
      * @description Esta función es un set de nuestra propiedad tamaño.
@@ -29,9 +37,9 @@ public class AlgoritmoGreedy {
      * @description Permite cambiar el valor de las dos matrices de nuestro problema.
      */
 
-    public void setArrays(ArrayList<ArrayList<Integer>>  MD, ArrayList<ArrayList<Integer>> MF){
-        matrizDistancias = MD;
-        matrizFlujos = MF;
+    public void setArrays(ArrayList<Integer>  MD, ArrayList<Integer> MF){
+        final2 = MD;
+        final1 = MF;
     }
     
     /**
@@ -41,24 +49,23 @@ public class AlgoritmoGreedy {
      * para nuestro algoritmo Greedy.
      */
     
-    public void calculoFilasGreedy(ArrayList<Integer> valoresDistancia, ArrayList<Integer> valoresFlujo ){
-        Integer resultadoFilaDistancia = 0;
+    public void calculoFilasGreedy(ArrayList<ArrayList<Integer>> matriz1, ArrayList<ArrayList<Integer>> matriz2 ){
+        Integer resultadoFilas = 0;
         
-        for (int i=0; i < matrizDistancias.size(); i++){
-            for (int j=0; j < matrizDistancias.get(i).size(); j++){
-                resultadoFilaDistancia += matrizDistancias.get(i).get(j);
+        for (int i=0; i < tamano; i++){
+            for (int j=0; j < tamano; j++){
+                resultadoFilas += matriz1.get(i).get(j);
             }
-            valoresDistancia.add(resultadoFilaDistancia);
-            resultadoFilaDistancia = 0;
+            final1.set(i, resultadoFilas);
+            resultadoFilas = 0;
         }
         
-        Integer resultadoFilaFlujos = 0;
-        for (int i=0; i < matrizFlujos.size(); i++){
-            for (int j=0; j < matrizFlujos.get(i).size(); j++){
-                resultadoFilaFlujos += matrizFlujos.get(i).get(j);
+        for (int i=0; i < tamano; i++){
+            for (int j=0; j < tamano; j++){
+                resultadoFilas += matriz2.get(i).get(j);
             }
-            valoresFlujo.add(resultadoFilaFlujos);
-            resultadoFilaFlujos = 0;
+            final2.set(i, resultadoFilas);
+            resultadoFilas = 0;
         }
     }
     
@@ -70,41 +77,43 @@ public class AlgoritmoGreedy {
      * recorrer cada Array y comparar tanto la distancia minima como el flujo maximo, de superar los umbrales marcados se actualiza el valor y
      * la posicion del Array y se almacena en nuestros vectoresIndice, que más tarde la unión de estos saldra nuestro vectorSolucion.
      */
-    public ArrayList<Integer> AlgoritmoGreedy(ArrayList<Integer> valoresDistancia, ArrayList<Integer> valoresFlujo){
+    public ArrayList<Integer> AlgoritmoGreedy(){
         ArrayList<Integer> vectorSolucion = new ArrayList<>(tamano);
         ArrayList<Integer> vectorIndice1 = new ArrayList<>(tamano);
         ArrayList<Integer> vectorIndice2 = new ArrayList<>(tamano);
         Integer posicion = 0;
         Integer flujoMaximo = -10;
         Integer distanciaMinima = 999999999;
+        //Creamos el vector de indices de flujos ordenados de manera ascendente por posicion 
         for (int i = 0; i< tamano; i++){
             for (int j = 0; j< tamano; j++){
-                if (valoresDistancia.get(i) < distanciaMinima){
-                    distanciaMinima = valoresDistancia.get(i);
-                    posicion = i;
-                }
-            }
-            distanciaMinima = 999999999;
-            valoresDistancia.set(i, 999999999);
-            vectorIndice1.add(posicion);
-        }
-        
-        for (int i = 0; i< tamano; i++){
-            for (int j = 0; j< tamano; j++){
-                if (valoresFlujo.get(i) > flujoMaximo){
-                    flujoMaximo = valoresFlujo.get(i);
+                if (flujoMaximo < final1.get(i)){
+                    flujoMaximo = final1.get(i);
                     posicion = i;
                 }
             }
             flujoMaximo = -10;
-            valoresFlujo.set(i, -10);
-            vectorIndice2.add(posicion);
+            final1.set(i, -10);
+            vectorIndice1.add(posicion);
         }
-        
+        //Creamos el vector de indices de distancias ordenados de manera ascendente por posicion 
+        for (int i = 0; i< tamano; i++){
+            for (int j = 0; j< tamano; j++){
+                if (distanciaMinima > final2.get(i)){
+                    distanciaMinima = final2.get(i);
+                    posicion = i;
+                }
+            }
+            distanciaMinima = 999999999;
+            final2.set(i, 999999999);
+            vectorIndice1.add(posicion);
+        }
+        //Creacion del vector solución (Mayor flujo con menor distancia)
         for (int i = 0; i < tamano; i++) {
-            System.out.println("En la posicion: " + vectorIndice1.get(i) + " El numero " + vectorIndice2.get(i));
             vectorSolucion.add(vectorIndice1.get(i), vectorIndice2.get(i));
         }
+        
+        solucion = vectorSolucion;
        
         return vectorSolucion;
     } 

@@ -6,6 +6,7 @@
 package p2metaheuristicas;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class EnfriamientoSimulado {
@@ -76,10 +77,9 @@ public class EnfriamientoSimulado {
         Integer mejorCoste = coste;
         Integer tamanoSolActual = solucionActual.size();
         solucionESimulado = solucionActual;
+        
         ArrayList<Integer> dlb = new ArrayList<>(tamanoSolActual);
-        for (int i = 0; i<tamanoSolActual; i++){
-            dlb.add(0);
-        }
+        
         Integer contador = 0;
         boolean mejora = true;
         Double temperatura = 1.5*coste;
@@ -87,12 +87,11 @@ public class EnfriamientoSimulado {
         Double temperaturaFinal = temperatura*0.05;
         Integer i = 0;
         Integer j = 0;
-        double rand = new Random().nextDouble();
         
         while (temperatura > temperaturaFinal && contador < 50000){
             mejora = false;
             contador++;
-            if (i==tamanoSolActual || j==tamanoSolActual){
+            if (Objects.equals(i, tamanoSolActual) || Objects.equals(j, tamanoSolActual)){
                 i=0;
                 j=0;
             }
@@ -101,11 +100,11 @@ public class EnfriamientoSimulado {
                 if (dlb.get(i) == 0){
                     boolean parada = false;
                     for (j=0;j<tamanoSolActual && !mejora; j++){
-                        if(i!=j){
+                        if(!Objects.equals(i, j)){
                             Integer costeFactorial = herramientas.costeFactorial(solucionActual, i, j, coste);
                             Integer diferencia = costeFactorial - coste;
                             Double enfriamiento = (-diferencia/temperatura);
-                            if((diferencia<0) || (rand <= Math.exp(enfriamiento))){
+                            if((diferencia < 0) || (new Random().nextDouble() <= Math.exp(enfriamiento))){
                                 intercambioPosiciones(solucionActual,i,j);
                                 coste = costeFactorial;
                                 dlb.set(i, 0);
@@ -126,14 +125,16 @@ public class EnfriamientoSimulado {
                 }
             }
             
+            
             if(tipoTemperatura == true){
                 temperatura = temperatura * 0.90;
             }else{
                 temperatura = (temperaturaInicial/(1+log(contador,10)));
             }
             
+            
         }
-        return coste;
+        return mejorCoste;
     }
     
      /**

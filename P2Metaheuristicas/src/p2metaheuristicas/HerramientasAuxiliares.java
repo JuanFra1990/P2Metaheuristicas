@@ -7,18 +7,20 @@ package p2metaheuristicas;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 public class HerramientasAuxiliares {
     private static ArrayList<ArrayList<Integer>> matrizFlujos;
     private static ArrayList<ArrayList<Integer>> matrizDistancias;
-    Integer tamano;
-    Integer numeroCromosomas;
-    Float probabilidadCruce;
-    Float probabilidadMutacion;
-    Integer evaluaciones;
+    private static Integer tamano;
+    private static Integer numeroCromosomas;
+    private static Float probabilidadCruce;
+    private static Float probabilidadMutacion;
+    private static Integer evaluaciones;
+    private static Integer semilla;
+    private static Integer ejecucion;
     
      /**
+     * @param Ntamano
      * @description Esta función permite almacenar el valor del tamano.
      */
     
@@ -156,8 +158,8 @@ public class HerramientasAuxiliares {
     
   public Integer costeTotal(ArrayList<Integer> Solucion) {
         int coste = 0;
-        for (int i = 0; i < tamano-1; i++) {
-            for (int j = 0; j < tamano-1; j++) {
+        for (int i = 0; i < tamano; i++) {
+            for (int j = 0; j < tamano; j++) {
                 if (i != j) {
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
                 }

@@ -6,7 +6,6 @@
 package p2metaheuristicas;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  *
@@ -35,7 +34,7 @@ public class BusquedaLocal {
     }
     
     /**
-     * @return ArrayList<Integer> con la solucion final del algoritmo
+     * @return ArrayList con la solucion final del algoritmo
      * @description Esta funcion nos permite obtener la solucionFinal.
      */
     public ArrayList<Integer> getSolucionFinal(){
@@ -66,19 +65,21 @@ public class BusquedaLocal {
     }
     
      /**
+     * @return Integer devuelve el coste del algoritmo
      * @description En esta funcion el objetivo es obtener la solución greedy mediante nuestros parametros de entrada, calculados previamente
      * y con distintas variables apoyo como son vectorIndice1, vectorIndice2, posicion, flujoMaximo y distanciaMaxima, el calculo consiste en
      * recorrer cada Array y comparar tanto la distancia minima como el flujo maximo, de superar los umbrales marcados se actualiza el valor y
      * la posicion del Array y se almacena en nuestros vectoresIndice, que más tarde la unión de estos saldra nuestro vectorSolucion.
      */
     public Integer AlgoritmoBusquedaLocal(){
-        
+        //Calculamos el coste inicial
         Integer coste = herramientas.costeTotal(solucionAnterior);
         Integer tamanoSolAnterior = solucionAnterior.size();
         ArrayList<Integer> dlb = new ArrayList<>(tamanoSolAnterior);
         for (int i = 0; i<tamanoSolAnterior; i++){
             dlb.add(0);
         }
+        
         Integer contador = 0;
         boolean mejora = true;
         boolean parada = false;
@@ -95,8 +96,7 @@ public class BusquedaLocal {
                         Integer CosteFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste);
                         if (CosteFactorial < coste) {
                             coste = CosteFactorial;
-                            // Usamos Swap si vemos que no funciona bien deberiamos usar la funcion Intercambia posiciones de arriba
-                            Collections.swap(solucionAnterior,i,j);
+                            intercambioPosiciones(solucionAnterior, i, j);
                             dlb.set(i, 0);
                             dlb.set(j, 0);
                             parada = true;

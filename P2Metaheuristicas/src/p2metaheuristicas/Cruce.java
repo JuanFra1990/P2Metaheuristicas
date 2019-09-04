@@ -6,14 +6,16 @@
 package p2metaheuristicas;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Cruce {
-    private Integer tamano;
-    ArrayList<Integer> padreUno;
-    ArrayList<Integer> padreDos;
-    ArrayList<Integer> hijoUno;
-    ArrayList<Integer> hijoDos;
+    final private Integer tamano;
+    ArrayList<Integer> padreUno = new ArrayList<>();
+    ArrayList<Integer> padreDos = new ArrayList<>();
+    ArrayList<Integer> hijoUno = new ArrayList<>();
+    ArrayList<Integer> hijoDos = new ArrayList<>();
     
     /**
      * @description Constructor de la clase Cruce
@@ -66,31 +68,31 @@ public class Cruce {
     }
     
     public void OX (ArrayList<Integer> _padreUno, ArrayList<Integer> _padreDos){
-        padreUno = new ArrayList<>();
-        _padreUno.forEach((n) -> padreUno.add(n));
-        padreDos = new ArrayList<>();
-        _padreDos.forEach((n) -> padreDos.add(n));
-        hijoUno = new ArrayList<>(tamano);
-        hijoDos = new ArrayList<>(tamano);
+        padreUno = _padreUno;
+        padreDos = _padreDos;
         
         for (int i = 0; i < tamano; i++){
             hijoUno.add(0);
             hijoDos.add(0);
         }
         
-        Integer rangoUno = RandomEnRango(0, tamano-1);
-        Integer rangoDos = RandomEnRango(0, tamano-1);
+        Random random = new Random();
         
-        while(rangoUno == (rangoDos=RandomEnRango(0, tamano-1)));
+        Integer rangoUno = random.nextInt(tamano-1);
+        Integer rangoDos = random.nextInt(tamano-1);
+        
+        while(rangoUno == (rangoDos=random.nextInt(tamano-1)));
         if (rangoUno > rangoDos){
             swap(rangoUno,rangoDos);
         }
         
+        hijoUno = new ArrayList<Integer>(tamano);
+        hijoDos = new ArrayList<Integer>(tamano);
+        
         for(int i=0; i<tamano; i++){
-            if(i<rangoUno && i<=rangoDos){
+            if(i>=rangoUno && i<=rangoDos){
                 hijoUno.set(i,padreUno.get(i));
-                hijoDos.set(i,padreDos.get(i));
-                
+                hijoDos.set(i,padreDos.get(i));  
             }
         }
         
@@ -99,29 +101,21 @@ public class Cruce {
         int i = rangoDos+1;
         Integer contador = 0;
         Integer posicion = 0;
-        // Integer elemento;
         
-        while(contador < tamano){
+         while(contador < tamano){
             boolean estaUno=busca(padreUno,padreDos.get(i%tamano),rangoUno,rangoDos,posicion);
             boolean estaDos=busca(padreDos,padreUno.get(i%tamano),rangoUno,rangoDos,posicion);
             
             if(estaUno == false){
-                if (contador1%tamano > hijoUno.size()-1){
-                    hijoUno.add(padreDos.get(i%tamano));
-                } else {
-                    hijoUno.set(hijoUno.get(contador1%tamano), padreDos.get(i%tamano));
-                }
+                hijoUno.set(contador1%tamano, padreDos.get(i%tamano));
                 contador1++;
             }
             
             if(estaDos == false){
-                if (contador2%tamano > hijoDos.size()-1){
-                    hijoDos.add(padreUno.get(i%tamano));
-                } else {
-                    hijoDos.set(hijoDos.get(contador2%tamano), padreUno.get(i%tamano));
-                }
+                hijoDos.set(hijoDos.get(contador2%tamano), padreUno.get(i%tamano));
                 contador2++;
             }
+            
             i++;
             contador++;
         }
@@ -138,7 +132,7 @@ public class Cruce {
      */
     public boolean busca(ArrayList<Integer> lista, Integer elemento, Integer rango1, Integer rango2, Integer pos){
         for (int i=rango1; i<=rango2; i++){
-            if(elemento == lista.get(i)){
+            if(Objects.equals(elemento, lista.get(i))){
                 pos=i;
                 return true;
             }
@@ -149,12 +143,16 @@ public class Cruce {
     public void PMX(ArrayList<Integer> _padreUno, ArrayList<Integer> _padreDos){
         padreUno = _padreUno;
         padreDos = _padreDos;
-        Integer rangoUno,rangoDos;
-        Integer posicion=0;
+        Integer rangoUno,rangoDos, posicion = null;
+        
+        Random random = new Random();
+        
+        hijoUno = new ArrayList<Integer>(tamano);
+        hijoDos = new ArrayList<Integer>(tamano);
         
         
-        rangoUno = RandomEnRango(0, tamano-1);
-        rangoDos = RandomEnRango((rangoUno+1)%tamano, tamano-1); // Esto es para que la posicion de corte no sea la misma para los dos rangos
+        rangoUno = random.nextInt(tamano-1);
+        rangoDos = ThreadLocalRandom.current().nextInt((rangoUno+1)%tamano, tamano-1); // Esto es para que la posicion de corte no sea la misma para los dos rangos
         
         if(rangoUno>rangoDos){
             swap(rangoUno, rangoDos);
@@ -162,8 +160,8 @@ public class Cruce {
         
         for(int i=0;i<tamano;i++){
             if(i>=rangoUno && i<=rangoDos){
-                hijoUno.add(hijoUno.get(i),padreDos.get(i));
-                hijoDos.add(hijoDos.get(i),padreUno.get(i));
+                hijoUno.set(i, padreDos.get(i));
+                hijoDos.set(i, padreUno.get(i));
             }
         }
         
@@ -174,24 +172,30 @@ public class Cruce {
                 elemento=hijoDos.get(posicion);
             }
             
-            hijoUno.add(hijoUno.get(i),elemento);
+            hijoUno.set(i,elemento);
             elemento = padreDos.get(i);
             
             while(busca(hijoDos,elemento,rangoUno,rangoDos,posicion)){
                 elemento=hijoUno.get(posicion);
             }
             
-            hijoDos.add(hijoDos.get(i),elemento);
+            hijoDos.set(i,elemento);
         }
         
         // Parte de reparación posterior
         for(int i=rangoDos+1; i<tamano; i++){
             int elemento = padreUno.get(i);
-            while(busca(hijoDos,elemento,rangoUno,rangoDos,posicion)){
-                elemento=hijoUno.get(posicion);
+            while(busca(hijoUno,elemento,rangoUno,rangoDos,posicion)){
+                elemento=hijoDos.get(posicion);
             }
-            hijoDos.add(hijoDos.get(i), elemento);
+            hijoUno.set(i, elemento);
+            
+            elemento = padreDos.get(i);
+            while(busca(hijoDos, elemento, rangoUno, rangoDos, posicion)){
+                elemento = hijoUno.get(posicion);
+            }
+            
+            hijoDos.set(i, elemento);
         }
-        
     }
 }
