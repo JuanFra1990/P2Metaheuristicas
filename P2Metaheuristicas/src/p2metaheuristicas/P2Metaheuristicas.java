@@ -55,17 +55,22 @@ public class P2Metaheuristicas {
                    cargaDatos(fichero);
                    break;
                 case '2':
+                   InputStreamReader isr = new InputStreamReader(System.in);
+                   BufferedReader bf = new BufferedReader (isr);
+                   Integer semilla;
                    System.out.println("Has seleccionado la opción de seleccionar semillas");
                    System.out.println("¿Cuantas semillas desea introducir?");
-                   Reader entradaNumeroSemillas=new InputStreamReader(System.in);
-                   opcion=(char)entradaNumeroSemillas.read();
-                   Integer tamanoSemilla = Character.getNumericValue(opcion);
+                   
+                    String lineaTeclado = bf.readLine();
+                    semilla = Integer.parseInt(lineaTeclado);
+                   
+                   Integer tamanoSemilla = semilla;
                    Integer contador = 1;
                    while (tamanoSemilla > 0){
                         System.out.println("Introduzca la semilla numero " + contador);
-                        Reader entradaSemillas=new InputStreamReader(System.in);
-                        opcion=(char)entradaSemillas.read();
-                        semillas.add(Character.getNumericValue(opcion));
+                        String semillaNueva = bf.readLine();
+                        semilla = Integer.parseInt(semillaNueva);
+                        semillas.add(semilla);
                         tamanoSemilla--;
                         contador++;
                    }
@@ -113,8 +118,8 @@ public class P2Metaheuristicas {
                     herramientasAuxiliares.setMatrizDistancias(matrizDistancias);
                     herramientasAuxiliares.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliares.setTamano(tamano);
-                    herramientasAuxiliares.setNumeroCromosomas(2);
-                    herramientasAuxiliares.setEvaluaciones(10);
+                    herramientasAuxiliares.setNumeroCromosomas(10);
+                    herramientasAuxiliares.setEvaluaciones(30);
                     herramientasAuxiliares.setProbabilidadMutacion(Float.POSITIVE_INFINITY);
                     herramientasAuxiliares.setProbabilidadCruce(Float.MAX_VALUE);
                     algoritmoEstacionario.setHerramientasAuxiliares(herramientasAuxiliares);
