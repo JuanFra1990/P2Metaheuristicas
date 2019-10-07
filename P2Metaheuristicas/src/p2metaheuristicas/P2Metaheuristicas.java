@@ -28,7 +28,9 @@ public class P2Metaheuristicas {
     
     private static ArrayList<Integer> semillas = new ArrayList<>();
     
+     @SuppressWarnings("empty-statement")
     public static void main(String[] args) throws IOException {
+         LogText.init("Practica2Metaheuristica");
         StringBuilder str=new StringBuilder();
        char opcion = '0';
        long startTime;
@@ -49,12 +51,18 @@ public class P2Metaheuristicas {
            
             switch (opcion){
                 case '1':
+                   LogText.LogWriter("Has seleccionado la opción de cargar datos");
+                   LogText.LogWriter("\r\n");
                    System.out.println("Has seleccionado la opción de cargar datos");
                    String fichero = seleccionFichero();
+                   LogText.LogWriter("Has seleccionado el fichero " + fichero);
+                   LogText.LogWriter("\r\n");
                    System.out.println("Has seleccionado el fichero " + fichero);
                    cargaDatos(fichero);
                    break;
                 case '2':
+                   LogText.LogWriter("Has seleccionado la opción de seleccionar semillas");
+                   LogText.LogWriter("\r\n");
                    InputStreamReader isr = new InputStreamReader(System.in);
                    BufferedReader bf = new BufferedReader (isr);
                    Integer semilla;
@@ -74,6 +82,14 @@ public class P2Metaheuristicas {
                         tamanoSemilla--;
                         contador++;
                    }
+                   
+                   LogText.LogWriter("Las semillas seleccionadas son: ");
+                   LogText.LogWriter("\r\n");
+                   for (int i = 0; i<semillas.size(); i++){
+                       LogText.LogWriter(semillas.get(i).toString());
+                       LogText.LogWriter("\r\n");
+                   }
+                   
                    break;
                 case '3':
                     if(matrizDistancias.isEmpty() || matrizFlujos.isEmpty()){
@@ -81,14 +97,17 @@ public class P2Metaheuristicas {
                         Reader entradaIn=new InputStreamReader(System.in);
                         opcion=(char)entradaIn.read();
                         if (opcion == 'S'){
-                            cargaDatos("./archivos/cnf02.dat");
+                            fichero = seleccionFichero();
+                            LogText.LogWriter("Has seleccionado el fichero " + fichero);
+                            LogText.LogWriter("\r\n");
+                            System.out.println("Has seleccionado el fichero " + fichero);
+                            cargaDatos(fichero);
                         } else {
                             System.out.println("Sin datos no podemos lanzar el algoritmo, greedy.");
                             System.out.println("Lo sentimos");
                             break;
                         }
                     }
-                    
                     if (semillas.isEmpty()){
                         System.out.println("¿Cuantas semillas desea introducir?");
                         Reader entradaNumeroSemillasR=new InputStreamReader(System.in);
@@ -108,9 +127,17 @@ public class P2Metaheuristicas {
                             System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
                             System.out.println("Lo sentimos");
                             break;
+                        } else {
+                            LogText.LogWriter("Las semillas seleccionadas son: ");
+                            LogText.LogWriter("\r\n");
+                            for (int i = 0; i<semillas.size(); i++){
+                                LogText.LogWriter(semillas.get(i).toString());
+                                LogText.LogWriter("\r\n");
+                            }
                         }
                     }
-                    
+                    LogText.LogWriter("Has seleccionado la opción del Algoritmo Genético Estacionario OX");
+                    LogText.LogWriter("\r\n");
                     System.out.println("Has seleccionado la opción del Algoritmo Genético Estacionario OX");
                     startTime = System.currentTimeMillis();
                     AlgoritmoGeneticoEstacionario algoritmoEstacionario = new AlgoritmoGeneticoEstacionario();
@@ -126,18 +153,24 @@ public class P2Metaheuristicas {
                     algoritmoEstacionario.evolucion(true);
                     algoritmoEstacionario.mostrarSolucion();
                     endTime = System.currentTimeMillis() - startTime;
+                    LogText.LogWriter("Ha tardado " + endTime + " ms");
+                    LogText.LogWriter("\r\n");
                     System.out.println("Ha tardado " + endTime + " ms");
                                      
                    break;
                  case '4':
-                    if(matrizDistancias.size() == 0 || matrizFlujos.size() == 0){
+                    if(matrizDistancias.isEmpty() || matrizFlujos.isEmpty()){
                         System.out.println("Los datos no estan cargados aún, ¿Desea cargarlos? (Responde con S o N)");
                         Reader entradaIn=new InputStreamReader(System.in);
                         opcion=(char)entradaIn.read();
                         if (opcion == 'S'){
-                            cargaDatos("./archivos/cnf02.dat");
+                             fichero = seleccionFichero();
+                            LogText.LogWriter("Has seleccionado el fichero " + fichero);
+                            LogText.LogWriter("\r\n");
+                            System.out.println("Has seleccionado el fichero " + fichero);
+                            cargaDatos(fichero);
                         } else {
-                            System.out.println("Sin datos no podemos lanzar el algoritmo de búsqueda local.");
+                            System.out.println("Sin datos no podemos lanzar el algoritmo genetico estacionario OX");
                             System.out.println("Lo sentimos");
                             break;
                         }
@@ -162,35 +195,50 @@ public class P2Metaheuristicas {
                             System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
                             System.out.println("Lo sentimos");
                             break;
+                        } else {
+                            LogText.LogWriter("Las semillas seleccionadas son: ");
+                            LogText.LogWriter("\r\n");
+                            for (int i = 0; i<semillas.size(); i++){
+                                LogText.LogWriter(semillas.get(i).toString());
+                                LogText.LogWriter("\r\n");
+                            }
                         }
                     }
                     
-                   System.out.println("Has seleccionado la opción del Algoritmo Genético Estacionario OX");
-                   startTime = System.currentTimeMillis();
+                    LogText.LogWriter("Has seleccionado la opción del Algoritmo Genético Estacionario PMX");
+                    LogText.LogWriter("\r\n");
+                    System.out.println("Has seleccionado la opción del Algoritmo Genético Estacionario PMX");
+                    startTime = System.currentTimeMillis();
                     AlgoritmoGeneticoEstacionario algoritmoEstacionarioPMX = new AlgoritmoGeneticoEstacionario();
                     HerramientasAuxiliares herramientasAuxiliaresGE = new HerramientasAuxiliares();
                     herramientasAuxiliaresGE.setMatrizDistancias(matrizDistancias);
                     herramientasAuxiliaresGE.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGE.setTamano(tamano);
-                    herramientasAuxiliaresGE.setNumeroCromosomas(2);
-                    herramientasAuxiliaresGE.setEvaluaciones(10);
+                    herramientasAuxiliaresGE.setNumeroCromosomas(10);
+                    herramientasAuxiliaresGE.setEvaluaciones(30);
                     herramientasAuxiliaresGE.setProbabilidadMutacion(Float.POSITIVE_INFINITY);
                     herramientasAuxiliaresGE.setProbabilidadCruce(Float.MAX_VALUE);
                     algoritmoEstacionarioPMX.setHerramientasAuxiliares(herramientasAuxiliaresGE);
                     algoritmoEstacionarioPMX.evolucion(false);
                     algoritmoEstacionarioPMX.mostrarSolucion();
                     endTime = System.currentTimeMillis() - startTime;
+                    LogText.LogWriter("Ha tardado " + endTime + " ms");
+                    LogText.LogWriter("\r\n");
                     System.out.println("Ha tardado " + endTime + " ms");
                    break;
                 case '5':
-                    if(matrizDistancias.size() == 0 || matrizFlujos.size() == 0){
+                    if(matrizDistancias.isEmpty() || matrizFlujos.isEmpty()){
                         System.out.println("Los datos no estan cargados aún, ¿Desea cargarlos? (Responde con S o N)");
                         Reader entradaIn=new InputStreamReader(System.in);
                         opcion=(char)entradaIn.read();
                         if (opcion == 'S'){
-                            cargaDatos("./archivos/cnf02.dat");
+                             fichero = seleccionFichero();
+                            LogText.LogWriter("Has seleccionado el fichero " + fichero);
+                            LogText.LogWriter("\r\n");
+                            System.out.println("Has seleccionado el fichero " + fichero);
+                            cargaDatos(fichero);
                         } else {
-                            System.out.println("Sin datos no podemos lanzar el algoritmo de búsqueda local.");
+                            System.out.println("Sin datos no podemos lanzar el algoritmo genetico estacionario OX");
                             System.out.println("Lo sentimos");
                             break;
                         }
@@ -215,6 +263,13 @@ public class P2Metaheuristicas {
                             System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
                             System.out.println("Lo sentimos");
                             break;
+                        } else {
+                            LogText.LogWriter("Las semillas seleccionadas son: ");
+                            LogText.LogWriter("\r\n");
+                            for (int i = 0; i<semillas.size(); i++){
+                                LogText.LogWriter(semillas.get(i).toString());
+                                LogText.LogWriter("\r\n");
+                            }
                         }
                     }
                     
@@ -225,8 +280,8 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGGO.setMatrizDistancias(matrizDistancias);
                     herramientasAuxiliaresGGO.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGGO.setTamano(tamano);
-                    herramientasAuxiliaresGGO.setNumeroCromosomas(2);
-                    herramientasAuxiliaresGGO.setEvaluaciones(10);
+                    herramientasAuxiliaresGGO.setNumeroCromosomas(10);
+                    herramientasAuxiliaresGGO.setEvaluaciones(30);
                     herramientasAuxiliaresGGO.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresGGO.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalOX.setHerramientasAuxiliares(herramientasAuxiliaresGGO);
@@ -242,8 +297,12 @@ public class P2Metaheuristicas {
                         Reader entradaIn=new InputStreamReader(System.in);
                         opcion=(char)entradaIn.read();
                         if (opcion == 'S'){
-                            cargaDatos("./archivos/cnf02.dat");
-                        } else {
+                             fichero = seleccionFichero();
+                            LogText.LogWriter("Has seleccionado el fichero " + fichero);
+                            LogText.LogWriter("\r\n");
+                            System.out.println("Has seleccionado el fichero " + fichero);
+                            cargaDatos(fichero);
+                        }  else {
                             System.out.println("Sin datos no podemos lanzar el algoritmo de búsqueda local.");
                             System.out.println("Lo sentimos");
                             break;
@@ -269,9 +328,18 @@ public class P2Metaheuristicas {
                             System.out.println("Sin semilla no podemos lanzar el algoritmo de Enfriamiento simulado Boltzmann.");
                             System.out.println("Lo sentimos");
                             break;
+                        } else {
+                            LogText.LogWriter("Las semillas seleccionadas son: ");
+                            LogText.LogWriter("\r\n");
+                            for (int i = 0; i<semillas.size(); i++){
+                                LogText.LogWriter(semillas.get(i).toString());
+                                LogText.LogWriter("\r\n");
+                            }
                         }
                     }
                     
+                    LogText.LogWriter("Has seleccionado la opción del Algoritmo Genético Generacional PMX");
+                    LogText.LogWriter("\r\n");
                     System.out.println("Has seleccionado la opción del Algoritmo Genético Generacional PMX");
                     startTime = System.currentTimeMillis();
                     AlgoritmoGeneticoGeneracional algoritmoGeneracionalPMX = new AlgoritmoGeneticoGeneracional();
@@ -279,8 +347,8 @@ public class P2Metaheuristicas {
                     herramientasAuxiliaresGGP.setMatrizDistancias(matrizDistancias);
                     herramientasAuxiliaresGGP.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresGGP.setTamano(tamano);
-                    herramientasAuxiliaresGGP.setNumeroCromosomas(2);
-                    herramientasAuxiliaresGGP.setEvaluaciones(10);
+                    herramientasAuxiliaresGGP.setNumeroCromosomas(10);
+                    herramientasAuxiliaresGGP.setEvaluaciones(30);
                     herramientasAuxiliaresGGP.setProbabilidadMutacion(Float.POSITIVE_INFINITY);
                     herramientasAuxiliaresGGP.setProbabilidadCruce(Float.MAX_VALUE);
                     algoritmoGeneracionalPMX.setHerramientasAuxiliares(herramientasAuxiliaresGGP);

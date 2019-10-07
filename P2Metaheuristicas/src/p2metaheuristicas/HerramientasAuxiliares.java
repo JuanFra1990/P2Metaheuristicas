@@ -7,6 +7,7 @@ package p2metaheuristicas;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class HerramientasAuxiliares {
     private static ArrayList<ArrayList<Integer>> matrizFlujos;
@@ -158,8 +159,8 @@ public class HerramientasAuxiliares {
     
   public Integer costeTotal(ArrayList<Integer> Solucion) {
         int coste = 0;
-        for (int i = 0; i < tamano; i++) {
-            for (int j = 0; j < tamano; j++) {
+        for (int i = 0; i < tamano-1; i++) {
+            for (int j = 0; j < tamano-1; j++) {
                 if (i != j) {
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
                 }
@@ -195,17 +196,21 @@ public class HerramientasAuxiliares {
     
     /**
      * @param array Array de Integer 
+     * @return  ArrayList<Integer>
      * @description Esta función rellena de valores auxiliares dentro de un rango nuestro array.
      */
-    public void cargarVector(ArrayList<Integer> array) {
-        for (Integer i = 0; i < tamano; i++) {
-            array.add(i);
+    public ArrayList<Integer> cargarVector(ArrayList<Integer> array) {
+        for (int icV = 0; icV < tamano; icV++) {
+            array.add(icV);
         }
         Integer auxiliar;
-        for (int i = tamano - 1; i > 0; i--) {
-            auxiliar = (0 + (i-(0) * (int)Math.random()));
-            //intercambio de elementos
-            Collections.swap(array,i,auxiliar);
+        Random random = new Random();
+        for (int icV = tamano - 1; icV > 0; icV--) {
+            Integer r = random.nextInt(icV);
+            auxiliar = array.get(r);
+            array.set(r, array.get(icV));
+            array.set(icV, auxiliar);
         }
+        return array;
     }
 }

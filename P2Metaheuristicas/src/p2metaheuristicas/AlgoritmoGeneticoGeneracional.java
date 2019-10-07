@@ -98,12 +98,12 @@ public class AlgoritmoGeneticoGeneracional {
             poblacion.add(pob);
             poblacionNueva.add(pob);
         }
-        costePoblacion = new ArrayList<Integer>(numeroCromosomas);
+        costePoblacion = new ArrayList<>(numeroCromosomas);
         Float probabilidadCruce = herramientasAux.getProbabilidadCruce();
         Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion()*tamano;
         Integer evaluaciones = 50;
         Integer totalEvaluaciones = herramientasAux.getEvaluaciones();
-        ArrayList<Integer> costes = new ArrayList<Integer>(numeroCromosomas);
+        ArrayList<Integer> costes = new ArrayList<>(numeroCromosomas);
         
         for(Integer i=0; i<numeroCromosomas; i++){
             herramientasAux.cargarVector(poblacion.get(i));
@@ -117,7 +117,8 @@ public class AlgoritmoGeneticoGeneracional {
             }
         }
                         
-        Cruce cruce = new Cruce(tamano);
+        Cruce cruce = new Cruce();
+        cruce.setTamano(tamano);
         
         if (tipoCruce) {
             System.out.println("Ha seleccionado el tipo de Algoritmo Genetico generacional OX");
@@ -130,7 +131,7 @@ public class AlgoritmoGeneticoGeneracional {
             posicionPrimeroMejor=0;
             for(Integer i=0; i<numeroCromosomas; i++){
                 Integer posicionDos;
-                while(i==(posicionDos=RandomEnRango(0,numeroCromosomas-1)));
+                while(Objects.equals(i, posicionDos=RandomEnRango(0,numeroCromosomas-1)));
                 if(costePoblacion.get(i) < costePoblacion.get(posicionDos)){
                     poblacionNueva.add(i, poblacion.get(i));
                     costes.add(i, costePoblacion.get(i));
@@ -180,12 +181,12 @@ public class AlgoritmoGeneticoGeneracional {
             Boolean elitismo = false;
             for(Integer i=0; i < numeroCromosomas; i++){
                 if( flagsPadres.get(i) ){
-                    if( i == posicionPrimeroMejor){
+                    if( Objects.equals(i, posicionPrimeroMejor)){
                         elitismo=true;
                     }
                     costes.add(i, herramientasAux.costeTotal(poblacionNueva.get(i)));
                     evaluaciones++;
-                    if(evaluaciones==totalEvaluaciones)break;
+                    if(Objects.equals(evaluaciones, totalEvaluaciones))break;
                 }
             }
             
@@ -215,7 +216,7 @@ public class AlgoritmoGeneticoGeneracional {
                 Integer i=234;
             }
         
-            poblacion = poblacion;
+            poblacionNueva = poblacion;
             costePoblacion = costes;
 
             //FIN REEMPLAZO

@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Cruce {
-    final private Integer tamano;
+    private Integer tamano;
     ArrayList<Integer> padreUno = new ArrayList<>();
     ArrayList<Integer> padreDos = new ArrayList<>();
     ArrayList<Integer> hijoUno = new ArrayList<>();
@@ -21,7 +21,7 @@ public class Cruce {
      * @description Constructor de la clase Cruce
      * @param _tamano tamano para crear el cruce
      */
-    Cruce(Integer _tamano){
+    public void setTamano(Integer _tamano){
         tamano=_tamano;
     }
     
@@ -67,6 +67,7 @@ public class Cruce {
         dos = aux;
     }
     
+    @SuppressWarnings("empty-statement")
     public void OX (ArrayList<Integer> _padreUno, ArrayList<Integer> _padreDos){
         padreUno = _padreUno;
         padreDos = _padreDos;
@@ -81,13 +82,13 @@ public class Cruce {
         Integer rangoUno = random.nextInt(tamano-1);
         Integer rangoDos = random.nextInt(tamano-1);
         
-        while(rangoUno == (rangoDos=random.nextInt(tamano-1)));
+        while(Objects.equals(rangoUno, rangoDos=random.nextInt(tamano-1)));
         if (rangoUno > rangoDos){
             swap(rangoUno,rangoDos);
         }
         
-        hijoUno = new ArrayList<Integer>(tamano);
-        hijoDos = new ArrayList<Integer>(tamano);
+        hijoUno = new ArrayList<>(tamano);
+        hijoDos = new ArrayList<>(tamano);
         
         for(int i=0; i<tamano; i++){
             if(i>=rangoUno && i<=rangoDos){
@@ -140,23 +141,28 @@ public class Cruce {
         return false;
     }
     
+    @SuppressWarnings("empty-statement")
     public void PMX(ArrayList<Integer> _padreUno, ArrayList<Integer> _padreDos){
         padreUno = _padreUno;
         padreDos = _padreDos;
-        Integer rangoUno,rangoDos, posicion = null;
         
+         for (int i = 0; i < tamano; i++){
+            hijoUno.add(0);
+            hijoDos.add(0);
+        }
+         
         Random random = new Random();
         
-        hijoUno = new ArrayList<Integer>(tamano);
-        hijoDos = new ArrayList<Integer>(tamano);
+        Integer rangoUno = random.nextInt(tamano-1);
+        Integer rangoDos = random.nextInt(tamano-1);
         
-        
-        rangoUno = random.nextInt(tamano-1);
-        rangoDos = ThreadLocalRandom.current().nextInt((rangoUno+1)%tamano, tamano-1); // Esto es para que la posicion de corte no sea la misma para los dos rangos
-        
-        if(rangoUno>rangoDos){
-            swap(rangoUno, rangoDos);
+        while(Objects.equals(rangoUno, rangoDos=random.nextInt(tamano-1)));
+        if (rangoUno > rangoDos){
+            swap(rangoUno,rangoDos);
         }
+        
+        hijoUno = new ArrayList<>(tamano);
+        hijoDos = new ArrayList<>(tamano);
         
         for(int i=0;i<tamano;i++){
             if(i>=rangoUno && i<=rangoDos){
@@ -164,6 +170,11 @@ public class Cruce {
                 hijoDos.set(i, padreUno.get(i));
             }
         }
+       
+        Integer contador1 = (rangoDos+1)%tamano;
+        Integer contador2 = (rangoDos+1)%tamano;
+        Integer contador = 0;
+        Integer posicion = 0;
         
         // Parte de reparación anterior
         for(int i=0;i<rangoUno; i++){
